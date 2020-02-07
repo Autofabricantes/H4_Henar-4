@@ -1,7 +1,7 @@
 /*
  * @author Pablo dMM (Pablodmm.isp@gmail.com)
- * @brief This code controls a number Velostat Pad to be tested
- * @date 2020_01_28
+ * @brief  Part of the Henar#4 Project. https://github.com/Autofabricantes/Henar-4 .This code controls 8 padNote, 1 padChannel and 1 padOctave
+ * @date   2020_02_08
  */
  
 // Library Import
@@ -9,14 +9,12 @@
 #include <MIDIUSB.h>
 #include <Adafruit_NeoPixel.h>
 
-
 #ifdef __AVR__
   #include <avr/power.h>
 #endif
 
 // Modes
 #define PAD_TESTING
-
 
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------System Pin Definition-----------------------------------------------------------------
@@ -49,7 +47,7 @@ const byte MAX_MIDIVELOCITY     = 127;
 
 // PAD TYPES
 const byte PADTYPE_NOTE         = 0;
-const byte PADTYPE_CHANNEL   = 1;
+const byte PADTYPE_CHANNEL      = 1;
 const byte PADTYPE_OCTAVE       = 2;
 
 // FIRST BYTE GENERAL
@@ -101,11 +99,11 @@ const byte NOTE_B6  = 83  ;const byte NOTE_B7  = 95  ;const byte NOTE_B8  =107  
 //------------------------------------------------------------------------------------------------------------------------------------------
 const byte GEN_R_L0   =  0    	 ;const byte GEN_G_L0   =  50  		;const byte GEN_B_L0  =   40;      // RGB L0
 const byte GEN_R_L1   =  10    	 ;const byte GEN_G_L1   =  40  		;const byte GEN_B_L1  =   50;      // RGB L1
-const byte GEN_R_L2   =  20   	 ;const byte GEN_G_L2   =  30  		;const byte GEN_B_L2  =   0;        // RGB L2
-const byte GEN_R_L3   =  30  	 ;const byte GEN_G_L3   =  20  		  ;const byte GEN_B_L3  =   10;       // RGB L3
-const byte GEN_R_L4   =  40     ;const byte GEN_G_L4   = 10       ;const byte GEN_B_L4  =   20;       // RGB L4
-const byte GEN_R_L5   =  50     ;const byte GEN_G_L5   =  0        ;const byte GEN_B_L5  =   30;      // RGB L5
-const byte FULL_R     =  150     ;const byte FULL_G     =  150      ;const byte FULL_B    =   150;      // FULL WHITE
+const byte GEN_R_L2   =  20   	 ;const byte GEN_G_L2   =  30  		;const byte GEN_B_L2  =   0;       // RGB L2
+const byte GEN_R_L3   =  30  	   ;const byte GEN_G_L3   =  20  		;const byte GEN_B_L3  =   10;      // RGB L3
+const byte GEN_R_L4   =  40      ;const byte GEN_G_L4   =  10     ;const byte GEN_B_L4  =   20;      // RGB L4
+const byte GEN_R_L5   =  50      ;const byte GEN_G_L5   =  0      ;const byte GEN_B_L5  =   30;      // RGB L5
+const byte FULL_R     =  150     ;const byte FULL_G     =  150    ;const byte FULL_B    =   150;     // FULL WHITE
 
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------Musical Parameters--------------------------------------------------------------------
@@ -123,10 +121,10 @@ byte SCALES[6][nPADNOTE] = {{NOTE_C0,  NOTE_D0,   NOTE_E0,   NOTE_F0,   NOTE_G0,
 // -----------------------------------------------------------------------------------------------------------------------------------------
 struct padObject {
   int muxChannel;
-  bool padStatus = OFF;
+  bool padStatus        = OFF;
   int lastMeasures[nMEASURES];
-  byte padType = 0;             // For a padObject is a NOTE
-  byte execValue = 0;             // For a padObject is a NOTE
+  int padType             = 0;
+  int execValue           = 0;
 };
 
 
@@ -136,17 +134,15 @@ struct padObject {
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 int padNote_muxChannel[nPADNOTE] =  {15,14,13,12,11,10,9,8};	// Pad Multeplexor Channel Definition
-int muxSel[4] = {MUX_D, MUX_C, MUX_B, MUX_A};
-int lastMeasures[nPADNOTE][nMEASURES];
-int modeTrigger = OFF;
-int generalThr = 0;
+int muxSel[4]      = {MUX_D, MUX_C, MUX_B, MUX_A};
+int modeTrigger    = OFF;
+int generalThr     = 0;
 int currentChannel = 0;   // Channel is also the Instrument
 int currentOctave  = 5;   // Starting at value NOTE_C5 60
 // PAD Definition
 padObject padNote[nPADNOTE];
 padObject padChannel;
 padObject padOctave;
-
 
 Adafruit_NeoPixel ledRGB = Adafruit_NeoPixel(1, LED, NEO_RGB + NEO_KHZ800);
 
@@ -156,7 +152,6 @@ void setup() {
   ledRGB.begin();
   ledRGB.show();
   // Pin Initialization
-  //pinMode(MUX_0, INPUT);
   pinMode(MUX_A, OUTPUT);
   pinMode(MUX_B, OUTPUT);
   pinMode(MUX_C, OUTPUT);
@@ -173,18 +168,24 @@ void setup() {
   blinkLed();
 }
 
+/*
+ * LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP
+ */
 void loop() {
-  generalThr = 100;
-  for(int i = 0; i < 1; i++){
+  generalThr = 200;
+  for(int i = 0; i < nPADNOTE; i++){
     read_singlePad(&padNote[i]);
   }
-  /*read_singlePad(&padOctave);
-  read_singlePad(&padChannel);*/
-
-  Serial << " padNote[i]: " << padNote[0].padType << "--ON----------------------------------------------------------------------" << endl;
-  //Serial << " padChannel: " << padChannel.padType << "--ON----------------------------------------------------------------------" << endl;
+  read_singlePad(&padOctave);
+  read_singlePad(&padChannel);
 }
 
+/*
+ * @function    void read_singlePad(padObject *pad)
+ * @description Reads the new value for the padObject and executes an action, if necessary
+ * @param       padObject *pad      -> PAD to analyse
+ * @return      none
+ */
 void read_singlePad(padObject *pad){
   set_muxGate(pad->muxChannel);
   int newRead = analogRead(MUX_0);
@@ -213,7 +214,6 @@ void read_singlePad(padObject *pad){
       updateMeasureArray(newRead, pad);
       if((calculateMeasureArray(pad) - newRead) > generalThr){
 		    pad->padStatus = ON;
-        Serial << " pad->padType: " << pad->padType << "--ON----------------------------------------------------------------------" << endl;
         switch(pad->padType){
           case PADTYPE_NOTE:
             exec_padNote(ON, currentChannel, (pad->execValue + (currentOctave * 12)), map(((avgLevel - generalThr) - newRead), 0, (avgLevel - generalThr), MIN_MIDIVELOCITY, MAX_MIDIVELOCITY));
@@ -235,29 +235,44 @@ void read_singlePad(padObject *pad){
   delay(10);
 }
 
+/*
+ * @function    void exec_padNote(byte ONOFF, byte channelToPlay, byte noteToPlay, byte velocityToPlay)
+ * @description Executes actions of PADTYPE_NOTE
+ * @param       byte ONOFF          -> ON or OFF enable
+ *              byte channelToPlay  -> MIDI Channel
+ *              byte noteToPlay     -> MIDI Note
+ *              byte velocityToPlay -> MIDI Velocity
+ * @return      none
+ */
 void exec_padNote(byte ONOFF, byte channelToPlay, byte noteToPlay, byte velocityToPlay){
   switch (ONOFF){
     case ON:
-      Serial << " NOTE: " << noteToPlay << "--ON----------------------------------------------------------------------" << endl;
-      //MIDI_TX(channelToPlay, NOTE_ON, noteToPlay, velocityToPlay);
+      //Serial << " NOTE: " << noteToPlay << "--ON----------------------------------------------------------------------" << endl;
+      MIDI_TX(channelToPlay, NOTE_ON, noteToPlay, velocityToPlay);
       break;
     default: // OFF
-      Serial << " NOTE: " << noteToPlay << "--OFF---------------------------------------------------------------------" << endl;
-      //MIDI_TX(channelToPlay, NOTE_OFF, noteToPlay, 0);
+      //Serial << " NOTE: " << noteToPlay << "--OFF---------------------------------------------------------------------" << endl;
+      MIDI_TX(channelToPlay, NOTE_OFF, noteToPlay, 0);
       break;
   }
 }
 
+/*
+ * @function    int exec_padOctave(byte ONOFF)
+ * @description Executes actions of PADTYPE_OCTAVE
+ * @param       byte ONOFF          -> ON or OFF enable
+ * @return      int currentOctave   -> new Octave
+ */
 int exec_padOctave(byte ONOFF){
   switch (ONOFF){
     case ON:
-      //MIDIOFF_FIX(currentChannel, 0, 127);
+      MIDIOFF_FIX(currentChannel, 0, 127);
       if(currentOctave == 5){
         currentOctave = 4;
       }else{
         currentOctave = 5;
       }
-      Serial << " CHANNEL: " << currentOctave << "--ON----------------------------------------------------------------------" << endl;
+      //Serial << " OCTAVE: " << currentOctave << "--ON----------------------------------------------------------------------" << endl;
       return currentOctave;
       break;
     default: // OFF
@@ -266,18 +281,23 @@ int exec_padOctave(byte ONOFF){
   }
 }
 
+/*
+ * @function    int exec_padChannel(byte ONOFF)
+ * @description Executes actions of PADTYPE_CHANNEL
+ * @param       byte ONOFF          -> ON or OFF enable
+ * @return      int currentChannel  -> new Channel
+ */
 int exec_padChannel(byte ONOFF){
   switch (ONOFF){
     case ON:
-      //MIDIOFF_FIX(currentChannel, 0, 127);
+      MIDIOFF_FIX(currentChannel, 0, 127);
       if(currentChannel < 5){
         currentChannel++;
       }else{
         currentChannel = 0;
       }
-      Serial << " CHANNEL: " << currentChannel << "--ON----------------------------------------------------------------------" << endl;
+      //Serial << " CHANNEL: " << currentChannel << "--ON----------------------------------------------------------------------" << endl;
       return currentChannel;
-      
       break;
     default: // OFF
       // Nothing to do
@@ -285,18 +305,36 @@ int exec_padChannel(byte ONOFF){
   }
 }
 
+/*
+ * @function    void init_allPadOctave()
+ * @description Sets the parameters of all padOctave
+ * @param       none
+ * @return      none
+ */
 void init_allPadOctave(){
-  padOctave.muxChannel = 1;               // TODO Fixed Value
+  padOctave.muxChannel = 6;               // TODO Fixed Value
   padOctave.execValue = currentOctave;
   padOctave.padType = PADTYPE_OCTAVE;
 }
 
+/*
+ * @function    void init_allPadChannel()
+ * @description Sets the parameters of all padChannel
+ * @param       none
+ * @return      none
+ */
 void init_allPadChannel(){
-  padChannel.muxChannel = 0;           // TODO Fixed Value
+  padChannel.muxChannel = 7;           // TODO Fixed Value
   padChannel.execValue = currentChannel;
   padChannel.padType = PADTYPE_CHANNEL;
 }
 
+/*
+ * @function    void init_allPadNote(int scale)
+ * @description Sets the parameters of all padNote
+ * @param       int scale     -> scale to be set, based on SCALES[][]
+ * @return      none
+ */
 void init_allPadNote(int scale){
 	for(int i = 0; i < nPADNOTE; i++){
 		padNote[i].muxChannel = padNote_muxChannel[i];
@@ -305,22 +343,39 @@ void init_allPadNote(int scale){
 	set_allPadNote_scale(scale);
 }
 
+/*
+ * @function    void set_allPadNote_scale(int scale)
+ * @description Updates all the padNote to a new scale of notes
+ * @param       int scale     -> scale to be set, based on SCALES[][]
+ * @return      none
+ */
 void set_allPadNote_scale(int scale){
-	//MIDIOFF_FIX(currentChannel, 0, 127);
+	MIDIOFF_FIX(currentChannel, 0, 127);
 	for(int i = 0; i < nPADNOTE; i++){
 		padNote[i].execValue = SCALES[scale][i];
 	}
 }
 
-int updateMeasureArray(int newValue, padObject *pad){
-  //lastMeasures[0] = newValue;
-  set_muxGate(pad->muxChannel);
-  for(int i = 0; i < nMEASURES; i++){
-    pad->lastMeasures[i + 1] = pad->lastMeasures[i];
+/*
+ * @function    void updateMeasureArray(int newValue, padObject *pad)
+ * @description Updates an specific padObject with a new analogRead value
+ * @param       padObject *pad    -> PAD to be updated
+ *              int newValue      -> newValue to be stored
+ * @return      none
+ */
+void updateMeasureArray(int newValue, padObject *pad){
+  for(int i = 1; i < nMEASURES; i++){
+    pad->lastMeasures[i] = pad->lastMeasures[i-1];
   }
   pad->lastMeasures[0] = newValue;
 }
 
+/*
+ * @function    int calculateMeasureArray(padObject *pad)
+ * @description Calculates the average measure of an specific padObject
+ * @param       padObject *pad            -> PAD to be measured
+ * @return      (averageValue/nMEASURES)  -> Average value
+ */
 int calculateMeasureArray(padObject *pad){
   int averageValue = 0;
   for(int i = 0; i < nMEASURES; i++){
@@ -329,6 +384,12 @@ int calculateMeasureArray(padObject *pad){
   return (averageValue/nMEASURES);
 }
 
+/*
+ * @function    void blinkLed()
+ * @description Blinks the LED in white for 100ms and returns to the previos color
+ * @param       none
+ * @return      none
+ */
 void blinkLed(){
     ledRGB.setPixelColor(0, FULL_G, FULL_R, FULL_B);
     ledRGB.show();
@@ -336,6 +397,12 @@ void blinkLed(){
     instrumentLed(currentChannel + 1);
 }
 
+/*
+ * @function    void instrumentLed(int level)
+ * @description Sets a designated color in the WS2812B RGB LED controlled by constant values
+ * @param       int level       -> LED Level code [0:5]
+ * @return      none
+ */
 void instrumentLed(int level){
 	switch(level){
 		case 0:	//	All OFF
@@ -369,6 +436,12 @@ void instrumentLed(int level){
 	}
 }
 
+/*
+ * @function    void set_muxGate(int muxChannel)
+ * @description Sets a designated Multiplexer Gate
+ * @param       int muxChannel      -> MUX Channel to set
+ * @return      none
+ */
 void set_muxGate(int muxChannel){
   for (int h = 0; h < 4; h++) {
       digitalWrite(muxSel[h], ((muxChannel >> (3 - h)) & 0x01)); //MUX Setup pin for each MUX Pin
@@ -378,16 +451,33 @@ void set_muxGate(int muxChannel){
   delay(15); // Delay por MUX Setup
 }
 
-void MIDI_TX(byte MIDICHANNEL, byte MESSAGE, byte PITCH, byte VELOCITY) {
+/*
+ * @function    void MIDI_TX(byte MIDICHANNEL, byte MESSAGE, byte PITCH, byte VELOCITY)
+ * @description Sends a MIDI Command
+ * @param       byte MIDICHANNEL    -> MIDI CHANNEL
+ *              byte MESSAGE        -> MIDI Byte 1
+ *              byte PITCH          -> MIDI Byte 2
+ *              byte VELOCITY       -> MIDI Byte 3
+ * @return      none
+ */
+void MIDI_TX(byte MIDICHANNEL, byte MESSAGE, byte PITCH, byte VELOCITY){
   //byte status1 = MESSAGE + MIDICHANNEL;
   midiEventPacket_t event = {(byte)(MESSAGE >> 4), (byte)(MESSAGE | (MIDICHANNEL)), PITCH, VELOCITY};
   MidiUSB.sendMIDI(event);
   MidiUSB.flush();
 }
 
-void MIDIOFF_FIX(byte CHANNEL, int INIT_NOTE, int END_NOTE){ // This is a very rude and nasty sustitution to a General Note Off CMD
+/*
+ * @function    void MIDIOFF_FIX(byte CHANNEL, int INIT_NOTE, int END_NOTE)
+ * @description Sends a number of NOTE_OFF to silence a channel. Done due to the non acceptance of MIDI Command MIDI_GLOBAL_OFF
+ * @param       byte CHANNEL    -> MIDI CHANNEL
+ *              int INIT_NOTE   -> Initial Note to MUTE
+ *              int END_NOTE    -> End Note to MUTE
+ * @return      none
+ */
+void MIDIOFF_FIX(byte CHANNEL, int INIT_NOTE, int END_NOTE){
   for(int i= INIT_NOTE; i <= END_NOTE; i++){
-    //MIDI_TX(CHANNEL, NOTE_OFF, i, 0);
+    MIDI_TX(CHANNEL, NOTE_OFF, i, 0);
     delay(10);
   }
 }
