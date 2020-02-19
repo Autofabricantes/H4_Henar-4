@@ -138,7 +138,7 @@ int padNote_muxChannel[nPADNOTE] =  {8,9,10,11,12,13,14,15};	// Pad Multeplexor 
 int muxSel[4]                    = {MUX_D, MUX_C, MUX_B, MUX_A};
 int modeTrigger                  = OFF;
 int generalThr                   = 0;
-int octaveCorrector[6]           = {0, -1, 0, 0, 0, -1};
+int octaveCorrector[6]           = {0, 1, 0, 0, 0, 1};
 byte currentInstrument           = 0;   // Channel is also the Instrument
 int currentOctave                = 5;   // Starting at value NOTE_C5 60
 // PAD Definition
@@ -174,7 +174,7 @@ void setup() {
  * LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP
  */
 void loop() {
-  generalThr = 200;
+  generalThr = 150;
   for(int i = 0; i < nPADNOTE; i++){
     read_singlePad(&padNote[i]);
   }
@@ -230,7 +230,7 @@ void read_singlePad(padObject *pad){
             // Nothing to do
             break;
         }
-        blinkLed();
+        //blinkLed();
       }
       break;
   }
@@ -275,6 +275,7 @@ int exec_padOctave(byte ONOFF){
         currentOctave = 5;
       }
       //Serial << " OCTAVE: " << currentOctave << "--ON----------------------------------------------------------------------" << endl;
+      blinkLed();
       return currentOctave;
       break;
     default: // OFF
@@ -300,6 +301,7 @@ int exec_padInstrument(byte ONOFF){
       }
       //Serial << " CHANNEL: " << currentInstrument << "--ON----------------------------------------------------------------------" << endl;
       MIDI_TX(0, INSTRUMENT, currentInstrument, 0);
+      blinkLed();
       return currentInstrument;
       break;
     default: // OFF
