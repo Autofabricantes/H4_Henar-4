@@ -4728,7 +4728,7 @@ source: http://www.world-semi.com/uploads/soft/130904/1_1500205981.pdf</descript
 <packages>
 <package name="PAD_CONNECTOR_MULTI">
 <pad name="P$1" x="0.63" y="2" drill="0.8"/>
-<text x="-1.275" y="3.285" size="0.6096" layer="21" font="vector" ratio="15">&gt;NAME</text>
+<text x="-1.275" y="3.285" size="0.6096" layer="25" font="vector" ratio="15">&gt;NAME</text>
 <wire x1="-1" y1="-3" x2="2" y2="-3" width="0.127" layer="21"/>
 <wire x1="2" y1="-3" x2="2" y2="3" width="0.127" layer="21"/>
 <wire x1="2" y1="3" x2="-1" y2="3" width="0.127" layer="21"/>
@@ -6300,7 +6300,7 @@ will be further integrated into the Sparkfun Library for other footprints.  It c
 <part name="SUPPLY5" library="supply2" deviceset="GND" device=""/>
 <part name="C_LED" library="adafruit" deviceset="C-US" device="C1210" value="100uF"/>
 <part name="R_LED" library="adafruit" deviceset="R-US_" device="M0805" value="47Ohm"/>
-<part name="SV1" library="con-lstb" deviceset="MA06-1" device=""/>
+<part name="J_PROG" library="con-lstb" deviceset="MA06-1" device=""/>
 <part name="SUPPLY7" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY8" library="supply2" deviceset="GND" device=""/>
 </parts>
@@ -12125,7 +12125,7 @@ Input, R_PAD_1 should be mounted.</text>
 <instance part="SUPPLY5" gate="GND" x="109.22" y="45.72" rot="R90"/>
 <instance part="C_LED" gate="G$1" x="86.36" y="55.88"/>
 <instance part="R_LED" gate="G$1" x="175.26" y="203.2"/>
-<instance part="SV1" gate="1" x="312.42" y="233.68"/>
+<instance part="J_PROG" gate="1" x="312.42" y="233.68"/>
 <instance part="SUPPLY7" gate="GND" x="355.6" y="226.06" rot="R90"/>
 <instance part="SUPPLY8" gate="GND" x="355.6" y="175.26" rot="R90"/>
 </instances>
@@ -12287,7 +12287,7 @@ Input, R_PAD_1 should be mounted.</text>
 <junction x="106.68" y="45.72"/>
 </segment>
 <segment>
-<pinref part="SV1" gate="1" pin="1"/>
+<pinref part="J_PROG" gate="1" pin="1"/>
 <pinref part="SUPPLY7" gate="GND" pin="GND"/>
 <wire x1="320.04" y1="226.06" x2="353.06" y2="226.06" width="0.1524" layer="91"/>
 <junction x="320.04" y="226.06"/>
@@ -12454,7 +12454,7 @@ Input, R_PAD_1 should be mounted.</text>
 <label x="106.68" y="63.5" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="SV1" gate="1" pin="2"/>
+<pinref part="J_PROG" gate="1" pin="2"/>
 <wire x1="358.14" y1="228.6" x2="320.04" y2="228.6" width="0.1524" layer="91"/>
 <label x="353.06" y="228.6" size="1.778" layer="95"/>
 <junction x="320.04" y="228.6"/>
@@ -12665,7 +12665,7 @@ Input, R_PAD_1 should be mounted.</text>
 <junction x="144.78" y="177.8"/>
 </segment>
 <segment>
-<pinref part="SV1" gate="1" pin="5"/>
+<pinref part="J_PROG" gate="1" pin="5"/>
 <wire x1="358.14" y1="236.22" x2="320.04" y2="236.22" width="0.1524" layer="91"/>
 <label x="353.06" y="236.22" size="1.778" layer="95"/>
 <junction x="320.04" y="236.22"/>
@@ -12679,7 +12679,7 @@ Input, R_PAD_1 should be mounted.</text>
 <junction x="144.78" y="175.26"/>
 </segment>
 <segment>
-<pinref part="SV1" gate="1" pin="6"/>
+<pinref part="J_PROG" gate="1" pin="6"/>
 <wire x1="358.14" y1="238.76" x2="320.04" y2="238.76" width="0.1524" layer="91"/>
 <label x="353.06" y="238.76" size="1.778" layer="95"/>
 <junction x="320.04" y="238.76"/>
@@ -12693,7 +12693,7 @@ Input, R_PAD_1 should be mounted.</text>
 <junction x="144.78" y="172.72"/>
 </segment>
 <segment>
-<pinref part="SV1" gate="1" pin="4"/>
+<pinref part="J_PROG" gate="1" pin="4"/>
 <wire x1="358.14" y1="233.68" x2="320.04" y2="233.68" width="0.1524" layer="91"/>
 <label x="353.06" y="233.68" size="1.778" layer="95"/>
 <junction x="320.04" y="233.68"/>
@@ -12701,7 +12701,7 @@ Input, R_PAD_1 should be mounted.</text>
 </net>
 <net name="RST" class="0">
 <segment>
-<pinref part="SV1" gate="1" pin="3"/>
+<pinref part="J_PROG" gate="1" pin="3"/>
 <wire x1="358.14" y1="231.14" x2="320.04" y2="231.14" width="0.1524" layer="91"/>
 <label x="353.06" y="231.14" size="1.778" layer="95"/>
 <junction x="320.04" y="231.14"/>
