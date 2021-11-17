@@ -178,9 +178,11 @@ void loop() {
   for(int i = 0; i < nPADNOTE; i++){
     read_singlePad(&padNote[i]);
   }
-  read_singlePad(&padOctave);
-  read_singlePad(&padInstrument);
+  //read_singlePad(&padOctave);
+  //read_singlePad(&padInstrument);
 }
+
+void readPAD
 
 /*
  * @function    void read_singlePad(padObject *pad)

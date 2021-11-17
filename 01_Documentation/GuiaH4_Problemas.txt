@@ -1,0 +1,26 @@
+Se modifica en el documento:
+
+C:\Program Files (x86)\Arduino\hardware\arduino\avr
+
+La linea:
+
+#uno.build.mcu=atmega328p
+
+por:
+
+uno.build.mcu=atmega328
+
+No funciona.
+
+
+
+Se modifciate el documento:
+
+C:\Users\34663\AppData\Local\Arduino15\packages\arduino\tools\avrdude\6.3.0-arduino17\etc
+
+La linea 8618:
+signature		= 0x1e 0x95 0x14;
+
+	
+por:
+signature		= 0x1e 0x95 0x0f;
