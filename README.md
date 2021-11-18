@@ -8,7 +8,7 @@ This repository is still under construction (after many months, I know :'( ) Ple
 The current tasks are right now:
 
 ## Project Scope
-The Henar#4 is a Open Source MIDI percurssion instrument designed to perform live. Its main characteristics are:
+The Henar#4 is a Open Source MIDI percussion instrument designed to perform live. Its main characteristics are:
 
 **Open Source:** The Henar#4 has been designed and build with Open Source HW and SW and using accesible manufacturing technologies in order for it to be very affordable and easily moded.
 **Build Flexibility:** The Henar#4 has been designed to allow a large number of different configurations (HMI elements in order to cope with the specific neccessities of each user.
@@ -18,7 +18,7 @@ The Henar#4 is a Open Source MIDI percurssion instrument designed to perform liv
 ## History and Collaborators
 The Henar#4 is part of a longer project started by the _Celeo Proyectos_ and _Un Instrumento para Henar_ in 2015. Its initial objective is to build a proper adapted instrument for Henar, a woman from Cuenca (Spain) that plays in an orchestra.
 
-Apart from the instrument (which has three previous versions which will be described later) the project aims to build up a platform for the community of developpers, users and enthusiasts to work toguether towards new ways to socialize with music and make it accesible for everyone. This is achieved not only though the development of the instrument itself but also through the creation of didactic materials and the organization of events such as DiverS+S 2017 (http://www.diversos.eu/), where various projects were presented and put in common, in order to create links and an active net.
+Apart from the instrument (which has three previous versions which will be described later) the project aims to build up a platform for the community of developers, users and enthusiasts to work toguether towards new ways to socialize with music and make it accesible for everyone. This is achieved not only though the development of the instrument itself but also through the creation of didactic materials and the organization of events such as DiverS+S 2017 (http://www.diversos.eu/), where various projects were presented and put in common, in order to create links and an active net.
 
 The collaborators of this project are:
 
@@ -35,7 +35,7 @@ Henar#3 instrument (The one this Wiki covers).
 **Contact:** [HERE MAIL]
 
 ## About the previous Henar (Henar#1, Henar#2, Henar#3)
-The Un instrumento para Henar project has already developped three previous versions of the instruments.
+The Un instrumento para Henar project has already developed three previous versions of the instruments.
 
  - Henar#1: [HERE LINK]
  - Henar#2: [HERE LINK]
