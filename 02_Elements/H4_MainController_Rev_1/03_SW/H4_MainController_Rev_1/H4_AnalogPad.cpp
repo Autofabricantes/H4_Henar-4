@@ -36,17 +36,9 @@ int H4_AnalogPad::calculateAverage(){
   for(int i = 0; i < nMEASURES; i++){
     newTotal += _measures[i];
   }
-  //Serial.print("New PAD Average = ");
-  //Serial.println(newTotal/nMEASURES);
+  Serial.print("New PAD Average = ");
+  Serial.println(newTotal/nMEASURES);
   return newTotal/nMEASURES; // newAverage
-}
-
-/**
- * @brief Sets a new value for _PAD_Enable
- * @param newPadEnable  new value for _PAD_Enable
- */
-void H4_AnalogPad::set_padEnable(int newPadEnable){
-  _PAD_Enable = newPadEnable;
 }
 
 /**
@@ -92,18 +84,18 @@ void H4_AnalogPad::readPad(){
   int newMeasure = analogRead(_pPAD);
   int newAverage = calculateAverage();
 
-  //Serial.print("newMeasure: ");
-  //Serial.println(newMeasure);
+  Serial.print("newMeasure: ");
+  Serial.println(newMeasure);
 
   // as a frequency filter, detects if the deviation is higher than _PAD_Thr
   if((newMeasure < newAverage)&&((newAverage-newMeasure)>_PAD_Thr)){
-    //Serial.println("PAD ACTIVE");
+    Serial.println("PAD ACTIVE");
     _wasActive = true;
     _isActive = true;
     fillMeasureArray();
   }
   else if((newMeasure > newAverage)&&((newMeasure-newAverage)>_PAD_Thr)){
-    //Serial.println("PAD DEACTIVE");
+    Serial.println("PAD DEACTIVE");
     _isActive = false;
     fillMeasureArray();
   }
@@ -115,12 +107,12 @@ void H4_AnalogPad::readPad(){
   _measures[0] = newMeasure;
   
   // Prints all data
-  //Serial.println("Full Measure Array");
-  //for(int j = 0; j < nMEASURES; j++){
-  //  Serial.print(_measures[j]);
-  //  Serial.print("\t");
-  //}
-  //Serial.println(" ");
+  Serial.println("Full Measure Array");
+  for(int j = 0; j < nMEASURES; j++){
+    Serial.print(_measures[j]);
+    Serial.print("\t");
+  }
+  Serial.println(" ");
 }
 
 /**

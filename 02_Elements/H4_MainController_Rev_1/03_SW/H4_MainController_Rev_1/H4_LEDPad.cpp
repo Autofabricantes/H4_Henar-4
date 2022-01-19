@@ -32,7 +32,6 @@ void H4_LEDPad::init()
   _LED.show();
 }
 
-
 /**
  * @brief Sets the whole Stripe Off
  */
@@ -46,11 +45,6 @@ void H4_LEDPad::setOff(){
  * @param colorCode Color to be set
  */
 void H4_LEDPad::setAllStripe(int colorCode){
-  // Value Safety Control
-  if((colorCode < MIN_COLORCODE) ||(colorCode > MAX_COLORCODE)){
-    colorCode = BLACK_OFF;
-  }
-  // Processing
   for(int i = 0; i< QLED; i++){
     _LED.setPixelColor(i, gamma8[COL[colorCode][0]], gamma8[COL[colorCode][1]], gamma8[COL[colorCode][2]]);
     /*Serial.print("ColorCode: ");
@@ -71,16 +65,8 @@ void H4_LEDPad::setAllStripe(int colorCode){
  * @param blinkDuration Duration of the blink in ms
  */
 void H4_LEDPad::blinkColor(int colorCode, int blinkDuration){
-  // Value Safety Control
-  if((colorCode < MIN_COLORCODE) ||(colorCode > MAX_COLORCODE)){
-    colorCode = BLACK_OFF;
-  }
-  if((blinkDuration > MAX_DURATION) || (blinkDuration < MIN_DURATION)){
-    blinkDuration = MIN_DURATION;
-  }
-  // Processing
   setAllStripe(colorCode);
-  delay(blinkDuration * 10);
+  delay(blinkDuration);
   setOff();
 }
 
@@ -88,21 +74,10 @@ void H4_LEDPad::blinkColor(int colorCode, int blinkDuration){
  * @brief Makes a Radial fade from the center from initColorCode to endColorCode in fadeDuration time
  * @param initColorCode Initial Color in which fade starts
  * @param endColorCode  End Color in which fade ends
- * @param fadeDuration  Duration of the fade in ds
+ * @param fadeDuration  Duration of the fade
  */
 void H4_LEDPad::fadeColor_fromNucleo(int initColorCode, int endColorCode, int fadeDuration){
-  // Value Safety Control
-  if((initColorCode < MIN_COLORCODE) ||(initColorCode > MAX_COLORCODE)){
-    initColorCode = BLACK_OFF;
-  }
-  if((endColorCode < MIN_COLORCODE) ||(endColorCode > MAX_COLORCODE)){
-    endColorCode = BLACK_OFF;
-  }
-  if((fadeDuration > MAX_DURATION) || (fadeDuration < MIN_DURATION)){
-    fadeDuration = MIN_DURATION;
-  }
-  // Processing
-  int fadeInterval = fadeDuration * 10 / NSTEPS; // in ms
+  int fadeInterval = fadeDuration / NSTEPS; // in ms
   int fadeR_R0 = (COL[endColorCode][0] - COL[initColorCode][0]) / NSTEPS; // in ms
   int fadeG_R0 = (COL[endColorCode][1] - COL[initColorCode][1]) / NSTEPS; // in ms
   int fadeB_R0 = (COL[endColorCode][2] - COL[initColorCode][2]) / NSTEPS; // in ms
@@ -138,17 +113,6 @@ void H4_LEDPad::fadeColor_fromNucleo(int initColorCode, int endColorCode, int fa
  * @param fadeDuration  Duration of the fade
  */
 void H4_LEDPad::fadeandOffColor_fromNucleo(int initColorCode, int endColorCode, int fadeDuration){
-  // Value Safety Control
-  if((initColorCode < MIN_COLORCODE) ||(initColorCode > MAX_COLORCODE)){
-    initColorCode = BLACK_OFF;
-  }
-  if((endColorCode < MIN_COLORCODE) ||(endColorCode > MAX_COLORCODE)){
-    endColorCode = BLACK_OFF;
-  }
-  if((fadeDuration > MAX_DURATION) || (fadeDuration < MIN_DURATION)){
-    fadeDuration = MIN_DURATION;
-  }
-  // Processing
   fadeColor_fromNucleo(initColorCode, endColorCode, fadeDuration/2);
   fadeColor_fromNucleo(endColorCode, initColorCode, fadeDuration/2);
   setOff();

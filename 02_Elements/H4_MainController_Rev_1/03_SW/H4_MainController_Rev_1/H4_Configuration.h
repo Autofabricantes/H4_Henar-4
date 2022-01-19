@@ -21,16 +21,16 @@ const int DEFAULT_primaryColor = 14;      // CYAN_HIGH
 const int DEFAULT_secondaryColor = 2;     // WHITE_LOW
 const int DEFAULT_disconnectedColor = 4;  // RED_BRIGHT
 const int DEFAULT_connectedColor = 8;     // BLUE_HIGH
-const int DEFAULT_blinkDuration = 30;     // MS
-const int DEFAULT_fadeDuration = 30;      // MS
+const int DEFAULT_blinkDuration = 500;    // MS
+const int DEFAULT_fadeDuration = 500;     // MS
 const bool DEFAULT_CH_On_0 = 1;           // ON
 const bool DEFAULT_CH_On_1 = 0;           // OFF
 const bool DEFAULT_CH_On_2 = 0;           // OFF
 const bool DEFAULT_CH_On_3 = 0;           // OFF
-const int DEFAULT_CH_Thr_0 = 100;          // AVERAGE
-const int DEFAULT_CH_Thr_1 = 100;          // AVERAGE
-const int DEFAULT_CH_Thr_2 = 100;          // AVERAGE
-const int DEFAULT_CH_Thr_3 = 100;          // AVERAGE
+const int DEFAULT_CH_Thr_0 = 20;          // AVERAGE
+const int DEFAULT_CH_Thr_1 = 20;          // AVERAGE
+const int DEFAULT_CH_Thr_2 = 20;          // AVERAGE
+const int DEFAULT_CH_Thr_3 = 20;          // AVERAGE
 
 
 class H4_Configuration

@@ -40,10 +40,6 @@
 
 // Other usefull constants
 #define  NSTEPS             20
-#define  MAX_COLORCODE      20
-#define  MIN_COLORCODE      0
-#define  MAX_DURATION       255
-#define  MIN_DURATION       2
 #define  RADIAL_OFFSET_1    4
 #define  RADIAL_OFFSET_2    8
 
