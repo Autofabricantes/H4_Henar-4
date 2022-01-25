@@ -41,7 +41,7 @@ class H4_Configuration
     void loadConfiguration();
     void saveConfiguration();
     void set_defaultConfiguration();
-
+    void set_defaultI2cDirConfiguration();
     // Structure to easily manage all the parameters
     struct storedConfiguration{
         uint8_t i2cDIR_Stored;

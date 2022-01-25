@@ -45,7 +45,9 @@ const int SET_CH                = 4;
 const int GET_CH                = 5;
 const int GET_PAD               = 6;
 const int SET_DEFAULT           = 7;
-const int SET_LEDACTIVITY       = 8;
+const int SET_DEFAULT_NOI2CDIR  = 8;
+const int SET_LEDACTIVITY       = 9;
+const int SET_RESET             = 10;
 
 // LED Activity IDs
 const int LED_ID_ALLSTRIPE      = 0;
@@ -65,6 +67,8 @@ const int LED_ID_FADEANDOFFCOLOR_FROMNUCLEO = 4;
 H4_LEDPad LED(pLED);
 
 int inMssg[10] = {0,0,0,0,0,0,0,0,0,0};
+int ledActivitySetOn[4] = {SET_LEDACTIVITY, LED_ID_ALLSTRIPE, PURPLE_HIGH, PURPLE_HIGH}; 
+int ledActivitySetOff[4] = {LED_ID_SETOFF, LED_ID_ALLSTRIPE, PURPLE_HIGH, PURPLE_HIGH}; 
 int color = 0;
 
 void setup() {
@@ -73,10 +77,10 @@ void setup() {
   Wire.begin();
   Wire.onReceive(recieveRequestResponse); // register event
 
-  Wire.beginTransmission(i2cDIR);
+  /*Wire.beginTransmission(i2cDIR);
   Wire.write(SET_DEFAULT);
   Wire.endTransmission();
-  delay(200);
+  delay(200);*/
   
 }
 
@@ -84,6 +88,22 @@ void setup() {
  * LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP
  */
 void loop() {
+  /*Wire.beginTransmission(i2cDIR);
+  for(int i = 0; i < 4; i++){
+    Wire.write(ledActivitySetOn[i]);
+  }
+  Wire.endTransmission();
+
+  delay(1000);
+  
+  Wire.beginTransmission(i2cDIR);
+  for(int i = 0; i < 4; i++){
+    Wire.write(ledActivitySetOff[i]);
+  }
+  Wire.endTransmission();
+  
+  delay(1000);*/
+
   Wire.beginTransmission(i2cDIR);
   Wire.write(GET_PAD);
   Wire.endTransmission();

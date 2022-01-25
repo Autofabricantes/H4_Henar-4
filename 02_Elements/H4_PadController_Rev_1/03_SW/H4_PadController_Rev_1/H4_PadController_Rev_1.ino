@@ -1,8 +1,8 @@
 /*
- * @author Pablo dMM (Pablodmm.isp@gmail.com)
- * @brief  Part of the Henar#4 Project. https://github.com/Autofabricantes/Henar-4 .This code controls 8 padNote, 1 padInstrument and 1 padOctave
- * @date   2020_10_27
- */
+   @author Pablo dMM (Pablodmm.isp@gmail.com)
+   @brief  Part of the Henar#4 Project. https://github.com/Autofabricantes/Henar-4 .This code controls 8 padNote, 1 padInstrument and 1 padOctave
+   @date   2020_10_27
+*/
 
 // Library Import
 #include <Wire.h>
@@ -16,14 +16,23 @@
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------System Pin Definition-----------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------
-// Pin Definition
-const int I2C_SCL			      = 3;
-const int I2C_SCK			      = 3;
+// Pin Definition Arduino Megsa
+/*const int I2C_SCL			      = 3;
+  const int I2C_SCK			      = 3;
+  const int pLED              = 2;
+  const int pPAD_0            = A0;
+  const int pPAD_1            = A0;
+  const int pPAD_2            = A0;
+  const int pPAD_3            = A0;*/
+
+// Pin Definition Arduino ATMEGA328 (UNO)
+const int I2C_SCL           = A4;
+const int I2C_SCK           = A5;
 const int pLED              = 2;
 const int pPAD_0            = A0;
-const int pPAD_1            = A0;
-const int pPAD_2            = A0;
-const int pPAD_3            = A0;
+const int pPAD_1            = A1;
+const int pPAD_2            = A2;
+const int pPAD_3            = A3;
 
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------Control and Configuration values Definition-------------------------------------------
@@ -47,7 +56,9 @@ const int SET_CH                = 4;
 const int GET_CH                = 5;
 const int GET_PAD               = 6;
 const int SET_DEFAULT           = 7;
-const int SET_LEDACTIVITY       = 8;
+const int SET_DEFAULT_NOI2CDIR  = 8;
+const int SET_LEDACTIVITY       = 9;
+const int SET_RESET             = 10;
 
 // LED Activity IDs
 const int LED_ID_ALLSTRIPE      = 0;
@@ -69,7 +80,7 @@ H4_AnalogPad PAD_1(pPAD_1, false, 0);
 H4_AnalogPad PAD_2(pPAD_2, false, 0);
 H4_AnalogPad PAD_3(pPAD_3, false, 0);
 H4_Configuration  CONFIGURATION;
-char requestBuffer[10] = {0,0,0,0,0,0,0,0,0,0};
+char requestBuffer[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int requestBufferLength = 10;
 
 // PAD Flags
@@ -77,9 +88,9 @@ char PAD_ACTIVE_0 = 0;
 char PAD_ACTIVE_1 = 0;
 char PAD_ACTIVE_2 = 0;
 char PAD_ACTIVE_3 = 0;
-// 
+//
 
-int inMssg[10] = {0,0,0,0,0,0,0,0,0,0};
+int inMssg[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 boolean recievedWireCmd = false;
 
 // Led Activity Flags:
@@ -89,19 +100,22 @@ int ledActivity_primaryCode   = 0;
 int ledActivity_secondaryCode = 0;
 int ledActivity_duration      = 0;
 
-
+void(* resetFunc) (void) = 0;
 
 void setup() {
-  //CONFIGURATION.set_defaultConfiguration();
-  //CONFIGURATION.saveConfiguration();
+  // Only to Execute once
+  CONFIGURATION.set_defaultConfiguration();
+  CONFIGURATION.set_defaultI2cDirConfiguration()
+  CONFIGURATION.saveConfiguration();
+  
   CONFIGURATION.init();
   CONFIGURATION.loadConfiguration();
-  
+
   PAD_0 = H4_AnalogPad(pPAD_0, CONFIGURATION.CONF.CH_On_0, CONFIGURATION.CONF.CH_Thr_0);
   PAD_1 = H4_AnalogPad(pPAD_1, CONFIGURATION.CONF.CH_On_1, CONFIGURATION.CONF.CH_Thr_1);
   PAD_2 = H4_AnalogPad(pPAD_2, CONFIGURATION.CONF.CH_On_2, CONFIGURATION.CONF.CH_Thr_2);
   PAD_3 = H4_AnalogPad(pPAD_3, CONFIGURATION.CONF.CH_On_3, CONFIGURATION.CONF.CH_Thr_3);
-  
+
   LED.init();
   delay(1000);
   PAD_0.init();
@@ -110,13 +124,15 @@ void setup() {
   PAD_3.init();
   Serial.begin(115200);
   // i2C Initialization
-  Wire.begin(CONFIGURATION.CONF.i2cDIR_Stored);
+  //Wire.setClock(10000);
+  //Wire.begin(CONFIGURATION.CONF.i2cDIR_Stored);
+  Wire.begin(8);
   Wire.onReceive(receiveEvent); // register event
   Wire.onRequest(requestEvent); // register event
   // Marks the start of operations
   //Pad Stabilization
-  
-  for(int i = 0; i > STABILIZATION_ITERATOR; i++){
+
+  for (int i = 0; i > STABILIZATION_ITERATOR; i++) {
     PAD_0.readPad();
     PAD_1.readPad();
     PAD_2.readPad();
@@ -125,79 +141,79 @@ void setup() {
 }
 
 /*
- * LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP
- */
+   LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP
+*/
 void loop() {
-  if(performLedActivity){
+  if (performLedActivity) {
     ledActivity(ledActivity_id, ledActivity_primaryCode, ledActivity_secondaryCode, ledActivity_duration);
   }
-  
-  if(recievedWireCmd){
+
+  if (recievedWireCmd) {
     CONFIGURATION.saveConfiguration();
     recievedWireCmd = false;
   }
   // READ PAD 0
   //LED.fadeColor_fromNucleo(CONFIGURATION.CONF.secondaryColor, CONFIGURATION.CONF.primaryColor, CONFIGURATION.CONF.fadeDuration);
-  if(CONFIGURATION.CONF.CH_On_0){
+  if (CONFIGURATION.CONF.CH_On_0) {
     PAD_0.readPad();
-    if((!PAD_ACTIVE_0) && PAD_0.get_isPadActivated()){
+    if ((!PAD_ACTIVE_0) && PAD_0.get_isPadActivated()) {
       Serial.println("0-> I GO UP!");
       PAD_ACTIVE_0 = 1;
       LED.fadeColor_fromNucleo(CONFIGURATION.CONF.secondaryColor, CONFIGURATION.CONF.primaryColor, CONFIGURATION.CONF.fadeDuration);
-      
+
     }
-    
-    if((PAD_ACTIVE_0) && !PAD_0.get_isPadActivated()){
+
+    if ((PAD_ACTIVE_0) && !PAD_0.get_isPadActivated()) {
       Serial.println("0-> I GO DOWN!");
       PAD_ACTIVE_0 = 0;
       LED.fadeColor_fromNucleo(CONFIGURATION.CONF.primaryColor, CONFIGURATION.CONF.secondaryColor, CONFIGURATION.CONF.fadeDuration);
-      
+
     }
   }
   // READ PAD 1
-  if(CONFIGURATION.CONF.CH_On_1){
+  if (CONFIGURATION.CONF.CH_On_1) {
     PAD_1.readPad();
-    if((!PAD_ACTIVE_1) && PAD_1.get_isPadActivated()){
+    if ((!PAD_ACTIVE_1) && PAD_1.get_isPadActivated()) {
       Serial.println("1-> I GO UP!");
       PAD_ACTIVE_1 = 1;
       LED.fadeColor_fromNucleo(CONFIGURATION.CONF.secondaryColor, CONFIGURATION.CONF.primaryColor, CONFIGURATION.CONF.fadeDuration);
-      
+
     }
-    
-    if((PAD_ACTIVE_1) && !PAD_1.get_isPadActivated()){
+
+    if ((PAD_ACTIVE_1) && !PAD_1.get_isPadActivated()) {
       Serial.println("1-> I GO DOWN!");
       PAD_ACTIVE_1 = 0;
       LED.fadeColor_fromNucleo(CONFIGURATION.CONF.primaryColor, CONFIGURATION.CONF.secondaryColor, CONFIGURATION.CONF.fadeDuration);
-      
+
     }
   }
   // READ PAD 2
-  if(CONFIGURATION.CONF.CH_On_2){
+  if (CONFIGURATION.CONF.CH_On_2) {
     PAD_2.readPad();
-    if((!PAD_ACTIVE_2) && PAD_2.get_isPadActivated()){
+    if ((!PAD_ACTIVE_2) && PAD_2.get_isPadActivated()) {
       Serial.println("2-> I GO UP!");
       PAD_ACTIVE_2 = 1;
       LED.fadeColor_fromNucleo(CONFIGURATION.CONF.secondaryColor, CONFIGURATION.CONF.primaryColor, CONFIGURATION.CONF.fadeDuration * 10);
-      
+
     }
-    
-    if((PAD_ACTIVE_2) && !PAD_2.get_isPadActivated()){
+
+    if ((PAD_ACTIVE_2) && !PAD_2.get_isPadActivated()) {
       Serial.println("2-> I GO DOWN!");
       PAD_ACTIVE_2 = 0;
       LED.fadeColor_fromNucleo(CONFIGURATION.CONF.primaryColor, CONFIGURATION.CONF.secondaryColor, CONFIGURATION.CONF.fadeDuration * 10);
     }
   }
   // READ PAD 3
-  if(CONFIGURATION.CONF.CH_On_3){
+  if (CONFIGURATION.CONF.CH_On_3) {
     PAD_3.readPad();
-    if((!PAD_ACTIVE_3) && PAD_3.get_isPadActivated()){
+    if ((!PAD_ACTIVE_3) && PAD_3.get_isPadActivated()) {
       Serial.println("3-> I GO UP!");
       PAD_ACTIVE_3 = 1;
       LED.fadeColor_fromNucleo(CONFIGURATION.CONF.secondaryColor, CONFIGURATION.CONF.primaryColor, CONFIGURATION.CONF.fadeDuration * 10);
-      
+
     }
-    
-    if((PAD_ACTIVE_3) && !PAD_3.get_isPadActivated()){
+
+    if ((PAD_ACTIVE_3) && !PAD_3.get_isPadActivated()) {
       Serial.println("3-> I GO DOWN!");
       PAD_ACTIVE_3 = 0;
       LED.fadeColor_fromNucleo(CONFIGURATION.CONF.primaryColor, CONFIGURATION.CONF.secondaryColor, CONFIGURATION.CONF.fadeDuration * 10);
@@ -206,9 +222,9 @@ void loop() {
   delay(5);
 }
 
-void ledActivity(int id, int primaryCode, int secondaryCode, int duration){
+void ledActivity(int id, int primaryCode, int secondaryCode, int duration) {
   performLedActivity = false; // Clear activation flag
-  switch(id){
+  switch (id) {
     case LED_ID_ALLSTRIPE:
       LED.setAllStripe(primaryCode);
       break;
@@ -230,16 +246,16 @@ void ledActivity(int id, int primaryCode, int secondaryCode, int duration){
 }
 
 /*
- * @function    void receiveEvent(int howMany)
- * @description Processes the event of a Recieve I2C Message
- * @param       int howMany    -> Not Sure what this is
- * @return      none
- */
+   @function    void receiveEvent(int howMany)
+   @description Processes the event of a Recieve I2C Message
+   @param       int howMany    -> Not Sure what this is
+   @return      none
+*/
 void receiveEvent(int howMany)
 {
   Serial.println("\nRecieve:");
   int i = 0;
-  while(Wire.available()){ // loop through all but the last
+  while (Wire.available()) { // loop through all but the last
     int in = Wire.read();    // receive byte as an integer
     inMssg[i] = in;
     Serial.print(inMssg[i]);
@@ -252,26 +268,26 @@ void receiveEvent(int howMany)
 }
 
 /*
- * @function    void requestEvent()
- * @description Processes the event of a Reqeust I2C Message
- * @param       none
- * @return      none
- */
+   @function    void requestEvent()
+   @description Processes the event of a Reqeust I2C Message
+   @param       none
+   @return      none
+*/
 void requestEvent()
 {
-    Serial.println("Request");
-    Wire.write(requestBuffer, requestBufferLength);
+  Serial.println("Request");
+  Wire.write(requestBuffer, requestBufferLength);
 }
 
 /*
- * @function    int processMsg(int inMssg[])
- * @description Processes the incomming I2C Message and prepares the Buffer por a following i2C Request
- * @param       int inMssg[]    -> Incomming message
- * @return      none
- */
-void processMsg(int inMssg[]){
+   @function    int processMsg(int inMssg[])
+   @description Processes the incomming I2C Message and prepares the Buffer por a following i2C Request
+   @param       int inMssg[]    -> Incomming message
+   @return      none
+*/
+void processMsg(int inMssg[]) {
   recievedWireCmd = true;
-  switch(inMssg[0]){
+  switch (inMssg[0]) {
     // Set the I2CDIR
     case SET_I2CDIR:
       Serial.println("\nSET_I2CDIR");
@@ -292,7 +308,7 @@ void processMsg(int inMssg[]){
       CONFIGURATION.CONF.blinkDuration      = inMssg[5];
       CONFIGURATION.CONF.fadeDuration       = inMssg[6];
       //CONFIGURATION.saveConfiguration();
-      // Prepare Request Buffer 
+      // Prepare Request Buffer
       requestBuffer[0] = SET_COLOR;
       requestBuffer[1] = CONFIGURATION.CONF.primaryColor;
       requestBuffer[2] = CONFIGURATION.CONF.secondaryColor;
@@ -377,6 +393,16 @@ void processMsg(int inMssg[]){
     case SET_DEFAULT:
       Serial.println("\nSET_DEFAULT");
       CONFIGURATION.set_defaultConfiguration();
+      CONFIGURATION.set_defaultI2cDirConfiguration();
+      PAD_0 = H4_AnalogPad(pPAD_0, CONFIGURATION.CONF.CH_On_0, CONFIGURATION.CONF.CH_Thr_0);
+      PAD_1 = H4_AnalogPad(pPAD_1, CONFIGURATION.CONF.CH_On_1, CONFIGURATION.CONF.CH_Thr_1);
+      PAD_2 = H4_AnalogPad(pPAD_2, CONFIGURATION.CONF.CH_On_2, CONFIGURATION.CONF.CH_Thr_2);
+      PAD_3 = H4_AnalogPad(pPAD_3, CONFIGURATION.CONF.CH_On_3, CONFIGURATION.CONF.CH_Thr_3);
+      //CONFIGURATION.saveConfiguration();
+      break;
+    case SET_DEFAULT_NOI2CDIR:
+      Serial.println("\nSET_DEFAULT_NOI2CDIR");
+      CONFIGURATION.set_defaultConfiguration();
       PAD_0 = H4_AnalogPad(pPAD_0, CONFIGURATION.CONF.CH_On_0, CONFIGURATION.CONF.CH_Thr_0);
       PAD_1 = H4_AnalogPad(pPAD_1, CONFIGURATION.CONF.CH_On_1, CONFIGURATION.CONF.CH_Thr_1);
       PAD_2 = H4_AnalogPad(pPAD_2, CONFIGURATION.CONF.CH_On_2, CONFIGURATION.CONF.CH_Thr_2);
@@ -390,6 +416,10 @@ void processMsg(int inMssg[]){
       ledActivity_primaryCode = inMssg[2];
       ledActivity_secondaryCode = inMssg[3];
       ledActivity_duration = inMssg[4];
+      break;
+    case SET_RESET                                                                                                                                                                                                          :
+      Serial.println("\nSET_RESET");
+      resetFunc(); //call reset
       break;
     default:
       break;

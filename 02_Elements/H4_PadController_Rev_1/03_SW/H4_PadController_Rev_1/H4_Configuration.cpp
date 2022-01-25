@@ -67,8 +67,12 @@ void H4_Configuration::saveConfiguration(){
   EEPROM.write(INIT_ADDR + 14, CONF.CH_Thr_3);
 }
 
-void H4_Configuration::set_defaultConfiguration(){
+void H4_Configuration::set_defaultI2cDirConfiguration(){
   CONF.i2cDIR_Stored     = DEFAULT_i2cDIR_Stored;
+}
+
+void H4_Configuration::set_defaultConfiguration(){
+  //CONF.i2cDIR_Stored     = DEFAULT_i2cDIR_Stored;
   CONF.primaryColor      = DEFAULT_primaryColor;
   CONF.secondaryColor    = DEFAULT_secondaryColor;
   CONF.disconnectedColor = DEFAULT_disconnectedColor;
