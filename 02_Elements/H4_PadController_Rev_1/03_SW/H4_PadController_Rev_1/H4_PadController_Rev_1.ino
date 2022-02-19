@@ -17,7 +17,7 @@
 // ---------------------------------------------------System Pin Definition-----------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // Pin Definition Arduino Megsa
-/*const int I2C_SCL			      = 3;
+/*  const int I2C_SCL			      = 3;
   const int I2C_SCK			      = 3;
   const int pLED              = 2;
   const int pPAD_0            = A0;
@@ -92,7 +92,7 @@ char PAD_ACTIVE_3 = 0;
 
 int inMssg[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 boolean recievedWireCmd = false;
-
+boolean i2cConnected = false;
 // Led Activity Flags:
 boolean performLedActivity    = false;
 int ledActivity_id            = 0;
@@ -103,11 +103,7 @@ int ledActivity_duration      = 0;
 void(* resetFunc) (void) = 0;
 
 void setup() {
-  // Only to Execute once
-  CONFIGURATION.set_defaultConfiguration();
-  CONFIGURATION.set_defaultI2cDirConfiguration()
-  CONFIGURATION.saveConfiguration();
-  
+  Serial.begin(115200);
   CONFIGURATION.init();
   CONFIGURATION.loadConfiguration();
 
@@ -124,9 +120,10 @@ void setup() {
   PAD_3.init();
   Serial.begin(115200);
   // i2C Initialization
-  //Wire.setClock(10000);
-  //Wire.begin(CONFIGURATION.CONF.i2cDIR_Stored);
-  Wire.begin(8);
+  Serial.print("I2C DIR: ");
+  Serial.println(CONFIGURATION.CONF.i2cDIR_Stored);
+  Wire.begin(CONFIGURATION.CONF.i2cDIR_Stored);
+  //Wire.begin(8);
   Wire.onReceive(receiveEvent); // register event
   Wire.onRequest(requestEvent); // register event
   // Marks the start of operations
@@ -138,6 +135,12 @@ void setup() {
     PAD_2.readPad();
     PAD_3.readPad();
   }
+
+  // When initialized, do not perform any activity until contacted through I2C. This is to detect errors
+  while(!i2cConnected){
+    ledActivity(LED_ID_FADEFROMNUCLEO, RED_LOW, BLACK_OFF, CONFIGURATION.CONF.fadeDuration);
+  }
+  LED.fadeColor_fromNucleo(CONFIGURATION.CONF.primaryColor, CONFIGURATION.CONF.secondaryColor, CONFIGURATION.CONF.fadeDuration);
 }
 
 /*
@@ -253,6 +256,7 @@ void ledActivity(int id, int primaryCode, int secondaryCode, int duration) {
 */
 void receiveEvent(int howMany)
 {
+  i2cConnected = true;
   Serial.println("\nRecieve:");
   int i = 0;
   while (Wire.available()) { // loop through all but the last
@@ -275,6 +279,7 @@ void receiveEvent(int howMany)
 */
 void requestEvent()
 {
+  i2cConnected = true;
   Serial.println("Request");
   Wire.write(requestBuffer, requestBufferLength);
 }
@@ -291,7 +296,7 @@ void processMsg(int inMssg[]) {
     // Set the I2CDIR
     case SET_I2CDIR:
       Serial.println("\nSET_I2CDIR");
-      CONFIGURATION.set_defaultConfiguration();
+      //CONFIGURATION.set_defaultConfiguration();
       CONFIGURATION.CONF.i2cDIR_Stored = inMssg[1];
       //CONFIGURATION.saveConfiguration();
       requestBuffer[0] = SET_I2CDIR;

@@ -14,7 +14,7 @@
 // Other usefull constants
 #define  NSTEPS             20
 
-
+const int STABILIZATION_ITERATOR = 200;
 
 class H4_AnalogPad
 {
@@ -22,6 +22,7 @@ class H4_AnalogPad
     H4_AnalogPad(int pPAD, bool PAD_Enable, int PAD_Thr);
     void init();
     void readPad();
+    void set_padEnable(int newPadEnable);
     void set_padThr(int newThr);
     int get_padThr();
     bool get_isPadActivated();

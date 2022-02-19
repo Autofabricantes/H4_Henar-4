@@ -16,7 +16,7 @@ const int SIGNATURE = 90;      // Signature 0x5A 0x01011010 -> Very hard to be r
 
 const int INIT_ADDR = 1;  // EEPROM Init Address
 // Default values for all the configuration parameters
-const uint8_t DEFAULT_i2cDIR_Stored = 8;  // DEFAULT
+const int DEFAULT_i2cDIR_Stored = 8;  // DEFAULT
 const int DEFAULT_primaryColor = 14;      // CYAN_HIGH
 const int DEFAULT_secondaryColor = 2;     // WHITE_LOW
 const int DEFAULT_disconnectedColor = 4;  // RED_BRIGHT
@@ -38,13 +38,14 @@ class H4_Configuration
   public:
     H4_Configuration();
     void init();
+    bool checkSignature();
     void loadConfiguration();
     void saveConfiguration();
     void set_defaultConfiguration();
     void set_defaultI2cDirConfiguration();
     // Structure to easily manage all the parameters
     struct storedConfiguration{
-        uint8_t i2cDIR_Stored;
+        int i2cDIR_Stored;
         int primaryColor;
         int secondaryColor;
         int disconnectedColor;

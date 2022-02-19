@@ -25,6 +25,7 @@ void H4_Configuration::init()
     loadConfiguration();
   }else{  // If EEPROM is corrupted or it is it's first use
     set_defaultConfiguration();
+    set_defaultI2cDirConfiguration();
     saveConfiguration();
     EEPROM.write(SIGNATURE_ADDR, SIGNATURE); 
     // Here it should probably restart
@@ -69,6 +70,7 @@ void H4_Configuration::saveConfiguration(){
 
 void H4_Configuration::set_defaultI2cDirConfiguration(){
   CONF.i2cDIR_Stored     = DEFAULT_i2cDIR_Stored;
+  //saveConfiguration();
 }
 
 void H4_Configuration::set_defaultConfiguration(){
@@ -87,6 +89,7 @@ void H4_Configuration::set_defaultConfiguration(){
   CONF.CH_Thr_1          = DEFAULT_CH_Thr_1;
   CONF.CH_Thr_2          = DEFAULT_CH_Thr_2;
   CONF.CH_Thr_3          = DEFAULT_CH_Thr_3;
+  //saveConfiguration();
 }
 
 /*
