@@ -8,34 +8,34 @@
 </settings>
 <grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="yes" active="no"/>
-<layer number="2" name="Route2" color="1" fill="3" visible="yes" active="no"/>
-<layer number="3" name="Route3" color="4" fill="3" visible="yes" active="no"/>
-<layer number="4" name="Route4" color="1" fill="4" visible="yes" active="no"/>
-<layer number="5" name="Route5" color="4" fill="4" visible="yes" active="no"/>
-<layer number="6" name="Route6" color="1" fill="8" visible="yes" active="no"/>
-<layer number="7" name="Route7" color="4" fill="8" visible="yes" active="no"/>
-<layer number="8" name="Route8" color="1" fill="2" visible="yes" active="no"/>
-<layer number="9" name="Route9" color="4" fill="2" visible="yes" active="no"/>
-<layer number="10" name="Route10" color="1" fill="7" visible="yes" active="no"/>
-<layer number="11" name="Route11" color="4" fill="7" visible="yes" active="no"/>
-<layer number="12" name="Route12" color="1" fill="5" visible="yes" active="no"/>
-<layer number="13" name="Route13" color="4" fill="5" visible="yes" active="no"/>
-<layer number="14" name="Route14" color="1" fill="6" visible="yes" active="no"/>
-<layer number="15" name="Route15" color="4" fill="6" visible="yes" active="no"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="no"/>
-<layer number="17" name="Pads" color="2" fill="1" visible="yes" active="no"/>
-<layer number="18" name="Vias" color="2" fill="1" visible="yes" active="no"/>
-<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="no"/>
-<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="no"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="no"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="no"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="no"/>
-<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="no"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="no"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="no"/>
-<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="no"/>
-<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="no"/>
+<layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
+<layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
+<layer number="3" name="Route3" color="4" fill="3" visible="no" active="no"/>
+<layer number="4" name="Route4" color="1" fill="4" visible="no" active="no"/>
+<layer number="5" name="Route5" color="4" fill="4" visible="no" active="no"/>
+<layer number="6" name="Route6" color="1" fill="8" visible="no" active="no"/>
+<layer number="7" name="Route7" color="4" fill="8" visible="no" active="no"/>
+<layer number="8" name="Route8" color="1" fill="2" visible="no" active="no"/>
+<layer number="9" name="Route9" color="4" fill="2" visible="no" active="no"/>
+<layer number="10" name="Route10" color="1" fill="7" visible="no" active="no"/>
+<layer number="11" name="Route11" color="4" fill="7" visible="no" active="no"/>
+<layer number="12" name="Route12" color="1" fill="5" visible="no" active="no"/>
+<layer number="13" name="Route13" color="4" fill="5" visible="no" active="no"/>
+<layer number="14" name="Route14" color="1" fill="6" visible="no" active="no"/>
+<layer number="15" name="Route15" color="4" fill="6" visible="no" active="no"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
+<layer number="17" name="Pads" color="2" fill="1" visible="no" active="no"/>
+<layer number="18" name="Vias" color="2" fill="1" visible="no" active="no"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="no" active="no"/>
+<layer number="20" name="Dimension" color="15" fill="1" visible="no" active="no"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="no"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="no"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="no"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="no"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="no" active="no"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="no" active="no"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="no" active="no"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="no" active="no"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="no"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="no"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="no"/>
@@ -44,8 +44,8 @@
 <layer number="34" name="bFinish" color="6" fill="6" visible="no" active="no"/>
 <layer number="35" name="tGlue" color="7" fill="4" visible="no" active="no"/>
 <layer number="36" name="bGlue" color="7" fill="5" visible="no" active="no"/>
-<layer number="37" name="tTest" color="7" fill="1" visible="yes" active="no"/>
-<layer number="38" name="bTest" color="7" fill="1" visible="yes" active="no"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="no" active="no"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="no" active="no"/>
 <layer number="39" name="tKeepout" color="4" fill="11" visible="no" active="no"/>
 <layer number="40" name="bKeepout" color="1" fill="11" visible="no" active="no"/>
 <layer number="41" name="tRestrict" color="4" fill="10" visible="no" active="no"/>
@@ -53,19 +53,19 @@
 <layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="no"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="no"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="no" active="no"/>
-<layer number="46" name="Milling" color="3" fill="1" visible="yes" active="no"/>
-<layer number="47" name="Measures" color="7" fill="1" visible="yes" active="no"/>
-<layer number="48" name="Document" color="7" fill="1" visible="yes" active="no"/>
-<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="no"/>
-<layer number="50" name="dxf" color="7" fill="1" visible="yes" active="no"/>
-<layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="no"/>
-<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="no"/>
-<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="yes" active="no"/>
-<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="yes" active="no"/>
-<layer number="56" name="wert" color="7" fill="1" visible="yes" active="no"/>
-<layer number="57" name="tCAD" color="7" fill="1" visible="yes" active="no"/>
-<layer number="59" name="tCarbon" color="7" fill="1" visible="yes" active="no"/>
-<layer number="60" name="bCarbon" color="7" fill="1" visible="yes" active="no"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="no" active="no"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="no" active="no"/>
+<layer number="48" name="Document" color="7" fill="1" visible="no" active="no"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="no" active="no"/>
+<layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="no" active="no"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="no" active="no"/>
+<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
+<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
+<layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
+<layer number="57" name="tCAD" color="7" fill="1" visible="no" active="no"/>
+<layer number="59" name="tCarbon" color="7" fill="1" visible="no" active="no"/>
+<layer number="60" name="bCarbon" color="7" fill="1" visible="no" active="no"/>
 <layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
 <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
@@ -4646,10 +4646,10 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <description>&lt;b&gt;Intelligent control LED with integrated light source&lt;/b&gt;&lt;p&gt;
 WS2812B&lt;br&gt;
 source: http://www.world-semi.com/uploads/soft/130904/1_1500205981.pdf</description>
-<smd name="1" x="-2.577" y="1.6" dx="1.651" dy="1" layer="1"/>
-<smd name="4" x="2.577" y="1.6" dx="1.651" dy="1" layer="1"/>
-<smd name="3" x="2.577" y="-1.6" dx="1.651" dy="1" layer="1"/>
-<smd name="2" x="-2.577" y="-1.6" dx="1.651" dy="1" layer="1"/>
+<smd name="1" x="-2.577" y="1.6" dx="1.9304" dy="0.9652" layer="1"/>
+<smd name="4" x="2.577" y="1.6" dx="1.9304" dy="0.9652" layer="1"/>
+<smd name="3" x="2.577" y="-1.6" dx="1.9304" dy="0.9652" layer="1"/>
+<smd name="2" x="-2.577" y="-1.6" dx="1.9304" dy="0.9652" layer="1"/>
 <wire x1="-2.5" y1="2.5" x2="-2.5" y2="-2.5" width="0.127" layer="51"/>
 <wire x1="-2.5" y1="-2.5" x2="2.5" y2="-2.5" width="0.127" layer="51"/>
 <wire x1="2.5" y1="-2.5" x2="2.5" y2="2.5" width="0.127" layer="51"/>
@@ -5145,13 +5145,14 @@ will be further integrated into the Sparkfun Library for other footprints.  It c
 <package name="1X02_2.54_SCREWTERM">
 <pad name="P2" x="0" y="0" drill="1.016" shape="square"/>
 <pad name="P1" x="2.54" y="0" drill="1.016" shape="square"/>
-<wire x1="-1.5" y1="3.25" x2="4" y2="3.25" width="0.2032" layer="21"/>
-<wire x1="4" y1="3.25" x2="4" y2="2.5" width="0.2032" layer="21"/>
-<wire x1="4" y1="2.5" x2="4" y2="-3.25" width="0.2032" layer="21"/>
-<wire x1="4" y1="-3.25" x2="-1.5" y2="-3.25" width="0.2032" layer="21"/>
-<wire x1="-1.5" y1="-3.25" x2="-1.5" y2="2.5" width="0.2032" layer="21"/>
-<wire x1="-1.5" y1="2.5" x2="-1.5" y2="3.25" width="0.2032" layer="21"/>
-<wire x1="-1.5" y1="2.5" x2="4" y2="2.5" width="0.2032" layer="21"/>
+<wire x1="-1.5" y1="3.25" x2="4" y2="3.25" width="0.2032" layer="48"/>
+<wire x1="4" y1="3.25" x2="4" y2="2.5" width="0.2032" layer="48"/>
+<wire x1="4" y1="2.5" x2="4" y2="-3.25" width="0.2032" layer="48"/>
+<wire x1="4" y1="-3.25" x2="-1.5" y2="-3.25" width="0.2032" layer="48"/>
+<wire x1="-1.5" y1="-3.25" x2="-1.5" y2="2.5" width="0.2032" layer="48"/>
+<wire x1="-1.5" y1="2.5" x2="-1.5" y2="3.25" width="0.2032" layer="48"/>
+<wire x1="-1.5" y1="2.5" x2="4" y2="2.5" width="0.2032" layer="48"/>
+<text x="2.54" y="-1.27" size="0.6096" layer="25" rot="R180">&gt;NAME</text>
 </package>
 <package name="JST-2-PTH-VERT">
 <wire x1="-2.95" y1="-2.25" x2="-2.95" y2="2.25" width="0.2032" layer="21"/>
@@ -5496,10 +5497,10 @@ We've spent an enormous amount of time creating and checking these footprints an
 You are welcome to use this library for commercial purposes. For attribution, we ask that when you begin to sell your device using our footprint, you email us with a link to the product being sold. We want bragging rights that we helped (in a very small part) to create your 8th world wonder. We would like the opportunity to feature your device on our homepage.</description>
 <packages>
 <package name="ARDUINO_MINI">
-<wire x1="-8.89" y1="16.51" x2="-8.89" y2="-16.51" width="0.127" layer="51"/>
-<wire x1="-8.89" y1="-16.51" x2="8.89" y2="-16.51" width="0.127" layer="51"/>
-<wire x1="8.89" y1="-16.51" x2="8.89" y2="16.51" width="0.127" layer="51"/>
-<wire x1="8.89" y1="16.51" x2="-8.89" y2="16.51" width="0.127" layer="51"/>
+<wire x1="-8.89" y1="16.51" x2="-8.89" y2="-16.51" width="0.127" layer="21"/>
+<wire x1="-8.89" y1="-16.51" x2="8.89" y2="-16.51" width="0.127" layer="21"/>
+<wire x1="8.89" y1="-16.51" x2="8.89" y2="16.51" width="0.127" layer="21"/>
+<wire x1="8.89" y1="16.51" x2="2.54" y2="16.51" width="0.127" layer="21"/>
 <pad name="1" x="-7.62" y="12.7" drill="1.016" diameter="1.8796"/>
 <pad name="2" x="-7.62" y="10.16" drill="1.016" diameter="1.8796"/>
 <pad name="3" x="-7.62" y="7.62" drill="1.016" diameter="1.8796"/>
@@ -5526,6 +5527,37 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pad name="24" x="7.62" y="12.7" drill="1.016" diameter="1.8796"/>
 <text x="-3.81" y="-13.97" size="1.27" layer="25">&gt;NAME</text>
 <text x="-3.81" y="-15.875" size="1.27" layer="27">&gt;VALUE</text>
+<text x="-3.56" y="-1.27" size="0.8128" layer="21" font="vector" ratio="15" distance="215" rot="MR180" align="center-right">TX0
+RX1
+GND
+GND
+D2
+D3
+D4
+D5
+D6
+D7
+D8
+D9</text>
+<text x="3.425" y="-1.27" size="0.8128" layer="21" font="vector" ratio="15" distance="215" rot="MR180" align="center-left">RAW
+GND
+RST
+VCC
+A3
+A2
+A1
+A0
+15
+14
+16
+10</text>
+<wire x1="2.54" y1="16.51" x2="-2.54" y2="16.51" width="0.127" layer="21"/>
+<wire x1="-2.54" y1="16.51" x2="-8.89" y2="16.51" width="0.127" layer="21"/>
+<wire x1="-2.54" y1="16.51" x2="-2.54" y2="14.605" width="0.127" layer="21"/>
+<wire x1="-2.54" y1="14.605" x2="-1.905" y2="13.97" width="0.127" layer="21"/>
+<wire x1="-1.905" y1="13.97" x2="1.905" y2="13.97" width="0.127" layer="21"/>
+<wire x1="1.905" y1="13.97" x2="2.54" y2="14.605" width="0.127" layer="21"/>
+<wire x1="2.54" y1="14.605" x2="2.54" y2="16.51" width="0.127" layer="21"/>
 </package>
 </packages>
 <symbols>
@@ -6047,10 +6079,10 @@ Source: DCJ0303.pdf</description>
 <classes>
 <class number="0" name="default" width="0" drill="0">
 </class>
-<class number="1" name="GND" width="0.381" drill="0">
+<class number="1" name="GND" width="0.508" drill="0">
 <clearance class="1" value="0.3048"/>
 </class>
-<class number="2" name="VCC" width="0.381" drill="0">
+<class number="2" name="VCC" width="0.508" drill="0">
 <clearance class="1" value="0.3048"/>
 </class>
 </classes>
@@ -6099,7 +6131,6 @@ Source: DCJ0303.pdf</description>
 <part name="SUPPLY5" library="supply2" deviceset="GND" device=""/>
 <part name="C_LED" library="adafruit" deviceset="C-US" device="C1210" value="100uF"/>
 <part name="R_LED" library="adafruit" deviceset="R-US_" device="M0805" value="47Ohm"/>
-<part name="SUPPLY8" library="supply2" deviceset="GND" device=""/>
 <part name="U_0" library="SparkFun-Boards" deviceset="ARDUINO_MINI" device=""/>
 <part name="SUPPLY3" library="supply2" deviceset="GND" device=""/>
 <part name="U_1" library="DOIT_ESP32_DEVKIT" deviceset="ESP32_DEVKIT" device=""/>
@@ -6118,10 +6149,6 @@ Source: DCJ0303.pdf</description>
 <part name="R_SW_0" library="adafruit" deviceset="R-US_" device="M0805" value="10kOhm"/>
 <part name="SW_00" library="pts525_20" deviceset="PTS525*" device="08" technology="SM"/>
 <part name="SW_01" library="pts525_20" deviceset="PTS525*" device="08" technology="SM"/>
-<part name="J_LED_00" library="SparkFun-Connectors" deviceset="M02" device="2.54MM_SCREWTERM"/>
-<part name="J_LED_01" library="SparkFun-Connectors" deviceset="M02" device="2.54MM_SCREWTERM"/>
-<part name="J_CON_04" library="SparkFun-Connectors" deviceset="M02" device="2.54MM_SCREWTERM"/>
-<part name="J_CON_05" library="SparkFun-Connectors" deviceset="M02" device="2.54MM_SCREWTERM"/>
 <part name="L_RGB_ARD_01" library="SparkFun-LED" deviceset="WS2812B" device=""/>
 <part name="SUPPLY7" library="supply2" deviceset="GND" device=""/>
 <part name="L_RGB_ARD_00" library="SparkFun-LED" deviceset="WS2812B" device=""/>
@@ -11971,14 +11998,13 @@ http://www.gammon.com.au/images/Wire_Wrapped_Atmega132_e.png</text>
 <instance part="SUPPLY2" gate="GND" x="43.18" y="162.56" rot="R270"/>
 <instance part="J_CON_00" gate="G$1" x="236.22" y="172.72"/>
 <instance part="J_CON_01" gate="G$1" x="236.22" y="167.64"/>
-<instance part="J_CON_02" gate="G$1" x="254" y="182.88"/>
-<instance part="J_CON_03" gate="G$1" x="254" y="177.8"/>
+<instance part="J_CON_02" gate="G$1" x="256.54" y="187.96"/>
+<instance part="J_CON_03" gate="G$1" x="256.54" y="182.88"/>
 <instance part="R_I2C_0" gate="G$1" x="45.72" y="231.14" rot="R180"/>
 <instance part="R_I2C_1" gate="G$1" x="33.02" y="228.6" rot="R180"/>
 <instance part="SUPPLY5" gate="GND" x="109.22" y="45.72" rot="R90"/>
 <instance part="C_LED" gate="G$1" x="86.36" y="55.88"/>
 <instance part="R_LED" gate="G$1" x="35.56" y="180.34"/>
-<instance part="SUPPLY8" gate="GND" x="106.68" y="20.32" rot="R90"/>
 <instance part="U_0" gate="G$1" x="66.04" y="228.6"/>
 <instance part="SUPPLY3" gate="GND" x="81.28" y="238.76" rot="R90"/>
 <instance part="U_1" gate="G$1" x="63.5" y="177.8"/>
@@ -11997,10 +12023,6 @@ http://www.gammon.com.au/images/Wire_Wrapped_Atmega132_e.png</text>
 <instance part="R_SW_0" gate="G$1" x="205.74" y="83.82" rot="R270"/>
 <instance part="SW_00" gate="G$1" x="228.6" y="78.74" rot="R270"/>
 <instance part="SW_01" gate="G$1" x="228.6" y="60.96" rot="R270"/>
-<instance part="J_LED_00" gate="G$1" x="88.9" y="22.86"/>
-<instance part="J_LED_01" gate="G$1" x="88.9" y="17.78"/>
-<instance part="J_CON_04" gate="G$1" x="228.6" y="187.96"/>
-<instance part="J_CON_05" gate="G$1" x="228.6" y="182.88"/>
 <instance part="L_RGB_ARD_01" gate="G$1" x="180.34" y="172.72"/>
 <instance part="SUPPLY7" gate="GND" x="205.74" y="167.64"/>
 <instance part="L_RGB_ARD_00" gate="G$1" x="180.34" y="203.2"/>
@@ -12096,11 +12118,12 @@ http://www.gammon.com.au/images/Wire_Wrapped_Atmega132_e.png</text>
 <segment>
 <pinref part="SUPPLY43" gate="GND" pin="GND"/>
 <junction x="276.86" y="167.64"/>
-<wire x1="261.62" y1="177.8" x2="276.86" y2="167.64" width="0.1524" layer="91"/>
-<wire x1="243.84" y1="167.64" x2="261.62" y2="177.8" width="0.1524" layer="91"/>
-<pinref part="J_CON_01" gate="G$1" pin="1"/>
+<wire x1="264.16" y1="182.88" x2="276.86" y2="167.64" width="0.1524" layer="91"/>
 <pinref part="J_CON_03" gate="G$1" pin="1"/>
-<junction x="261.62" y="177.8"/>
+<wire x1="243.84" y1="167.64" x2="248.92" y2="167.64" width="0.1524" layer="91"/>
+<wire x1="248.92" y1="167.64" x2="264.16" y2="182.88" width="0.1524" layer="91"/>
+<junction x="264.16" y="182.88"/>
+<pinref part="J_CON_01" gate="G$1" pin="1"/>
 <junction x="243.84" y="167.64"/>
 </segment>
 <segment>
@@ -12254,13 +12277,6 @@ http://www.gammon.com.au/images/Wire_Wrapped_Atmega132_e.png</text>
 <junction x="200.66" y="251.46"/>
 </segment>
 <segment>
-<pinref part="J_LED_01" gate="G$1" pin="2"/>
-<pinref part="SUPPLY8" gate="GND" pin="GND"/>
-<wire x1="104.14" y1="20.32" x2="96.52" y2="20.32" width="0.1524" layer="91"/>
-<junction x="96.52" y="20.32"/>
-<junction x="104.14" y="20.32"/>
-</segment>
-<segment>
 <pinref part="J_SW_00" gate="G$1" pin="1"/>
 <wire x1="248.92" y1="236.22" x2="236.22" y2="236.22" width="0.1524" layer="91"/>
 <pinref part="SUPPLY1" gate="GND" pin="GND"/>
@@ -12295,7 +12311,7 @@ http://www.gammon.com.au/images/Wire_Wrapped_Atmega132_e.png</text>
 <junction x="325.12" y="243.84"/>
 </segment>
 </net>
-<net name="VIN" class="0">
+<net name="VIN" class="2">
 <segment>
 <wire x1="292.1" y1="137.16" x2="322.58" y2="137.16" width="0.1524" layer="91"/>
 <label x="292.1" y="137.16" size="1.778" layer="95"/>
@@ -12305,15 +12321,6 @@ http://www.gammon.com.au/images/Wire_Wrapped_Atmega132_e.png</text>
 <junction x="332.74" y="137.16"/>
 <pinref part="C_VR_0" gate="G$1" pin="1"/>
 <junction x="322.58" y="134.62"/>
-</segment>
-<segment>
-<label x="276.86" y="175.26" size="1.778" layer="95"/>
-<wire x1="261.62" y1="185.42" x2="276.86" y2="175.26" width="0.1524" layer="91"/>
-<wire x1="243.84" y1="175.26" x2="261.62" y2="185.42" width="0.1524" layer="91"/>
-<pinref part="J_CON_00" gate="G$1" pin="2"/>
-<pinref part="J_CON_02" gate="G$1" pin="2"/>
-<junction x="261.62" y="185.42"/>
-<junction x="243.84" y="175.26"/>
 </segment>
 <segment>
 <pinref part="U_1" gate="G$1" pin="VIN"/>
@@ -12337,7 +12344,7 @@ http://www.gammon.com.au/images/Wire_Wrapped_Atmega132_e.png</text>
 <junction x="337.82" y="233.68"/>
 </segment>
 </net>
-<net name="5V" class="1">
+<net name="5V" class="2">
 <segment>
 <wire x1="353.06" y1="137.16" x2="360.68" y2="137.16" width="0.1524" layer="91"/>
 <wire x1="360.68" y1="137.16" x2="381" y2="137.16" width="0.1524" layer="91"/>
@@ -12445,12 +12452,6 @@ http://www.gammon.com.au/images/Wire_Wrapped_Atmega132_e.png</text>
 <label x="106.68" y="63.5" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="109.22" y1="25.4" x2="96.52" y2="25.4" width="0.1524" layer="91"/>
-<label x="106.68" y="25.4" size="1.778" layer="95"/>
-<pinref part="J_LED_00" gate="G$1" pin="2"/>
-<junction x="96.52" y="25.4"/>
-</segment>
-<segment>
 <pinref part="U_0" gate="G$1" pin="VCC"/>
 <wire x1="93.98" y1="233.68" x2="78.74" y2="233.68" width="0.1524" layer="91"/>
 <junction x="78.74" y="233.68"/>
@@ -12545,15 +12546,6 @@ http://www.gammon.com.au/images/Wire_Wrapped_Atmega132_e.png</text>
 </net>
 <net name="I2C_SDA" class="0">
 <segment>
-<label x="276.86" y="172.72" size="1.778" layer="95"/>
-<wire x1="261.62" y1="182.88" x2="276.86" y2="172.72" width="0.1524" layer="91"/>
-<wire x1="243.84" y1="172.72" x2="261.62" y2="182.88" width="0.1524" layer="91"/>
-<pinref part="J_CON_00" gate="G$1" pin="1"/>
-<pinref part="J_CON_02" gate="G$1" pin="1"/>
-<junction x="261.62" y="182.88"/>
-<junction x="243.84" y="172.72"/>
-</segment>
-<segment>
 <pinref part="R_I2C_0" gate="G$1" pin="1"/>
 <label x="45.72" y="228.6" size="1.778" layer="95"/>
 <pinref part="U_0" gate="G$1" pin="2"/>
@@ -12567,17 +12559,18 @@ http://www.gammon.com.au/images/Wire_Wrapped_Atmega132_e.png</text>
 <junction x="99.06" y="185.42"/>
 <label x="109.22" y="185.42" size="1.778" layer="95"/>
 </segment>
+<segment>
+<label x="276.86" y="172.72" size="1.778" layer="95"/>
+<wire x1="264.16" y1="187.96" x2="276.86" y2="172.72" width="0.1524" layer="91"/>
+<pinref part="J_CON_02" gate="G$1" pin="1"/>
+<wire x1="243.84" y1="172.72" x2="248.92" y2="172.72" width="0.1524" layer="91"/>
+<wire x1="248.92" y1="172.72" x2="264.16" y2="187.96" width="0.1524" layer="91"/>
+<junction x="264.16" y="187.96"/>
+<pinref part="J_CON_00" gate="G$1" pin="1"/>
+<junction x="243.84" y="172.72"/>
+</segment>
 </net>
 <net name="I2C_SCL" class="0">
-<segment>
-<wire x1="276.86" y1="170.18" x2="261.62" y2="180.34" width="0.1524" layer="91"/>
-<label x="276.86" y="170.18" size="1.778" layer="95"/>
-<wire x1="243.84" y1="170.18" x2="261.62" y2="180.34" width="0.1524" layer="91"/>
-<pinref part="J_CON_01" gate="G$1" pin="2"/>
-<pinref part="J_CON_03" gate="G$1" pin="2"/>
-<junction x="261.62" y="180.34"/>
-<junction x="243.84" y="170.18"/>
-</segment>
 <segment>
 <pinref part="R_I2C_1" gate="G$1" pin="1"/>
 <label x="40.64" y="226.06" size="1.778" layer="95"/>
@@ -12592,6 +12585,16 @@ http://www.gammon.com.au/images/Wire_Wrapped_Atmega132_e.png</text>
 <junction x="99.06" y="193.04"/>
 <label x="109.22" y="193.04" size="1.778" layer="95"/>
 </segment>
+<segment>
+<wire x1="276.86" y1="170.18" x2="264.16" y2="185.42" width="0.1524" layer="91"/>
+<label x="276.86" y="170.18" size="1.778" layer="95"/>
+<pinref part="J_CON_03" gate="G$1" pin="2"/>
+<wire x1="243.84" y1="170.18" x2="248.92" y2="170.18" width="0.1524" layer="91"/>
+<wire x1="248.92" y1="170.18" x2="264.16" y2="185.42" width="0.1524" layer="91"/>
+<junction x="264.16" y="185.42"/>
+<pinref part="J_CON_01" gate="G$1" pin="2"/>
+<junction x="243.84" y="170.18"/>
+</segment>
 </net>
 <net name="LED_OUT" class="0">
 <segment>
@@ -12599,12 +12602,6 @@ http://www.gammon.com.au/images/Wire_Wrapped_Atmega132_e.png</text>
 <junction x="109.22" y="86.36"/>
 <wire x1="109.22" y1="86.36" x2="93.98" y2="86.36" width="0.1524" layer="91"/>
 <label x="93.98" y="86.36" size="1.778" layer="95"/>
-</segment>
-<segment>
-<label x="106.68" y="22.86" size="1.778" layer="95"/>
-<pinref part="J_LED_00" gate="G$1" pin="1"/>
-<wire x1="96.52" y1="22.86" x2="106.68" y2="22.86" width="0.1524" layer="91"/>
-<junction x="96.52" y="22.86"/>
 </segment>
 </net>
 <net name="N$3" class="0">
@@ -12900,32 +12897,16 @@ http://www.gammon.com.au/images/Wire_Wrapped_Atmega132_e.png</text>
 <label x="215.9" y="88.9" size="1.778" layer="95"/>
 </segment>
 </net>
-<net name="GND1" class="1">
-<segment>
-<wire x1="236.22" y1="182.88" x2="243.84" y2="167.64" width="0.1524" layer="91"/>
-<pinref part="J_CON_05" gate="G$1" pin="1"/>
-<junction x="236.22" y="182.88"/>
-</segment>
-</net>
 <net name="VIN1" class="0">
 <segment>
-<wire x1="236.22" y1="190.5" x2="243.84" y2="175.26" width="0.1524" layer="91"/>
-<pinref part="J_CON_04" gate="G$1" pin="2"/>
-<junction x="236.22" y="190.5"/>
-</segment>
-</net>
-<net name="I2C_SDA1" class="0">
-<segment>
-<wire x1="236.22" y1="187.96" x2="243.84" y2="172.72" width="0.1524" layer="91"/>
-<pinref part="J_CON_04" gate="G$1" pin="1"/>
-<junction x="236.22" y="187.96"/>
-</segment>
-</net>
-<net name="I2C_SCL1" class="0">
-<segment>
-<wire x1="236.22" y1="185.42" x2="243.84" y2="170.18" width="0.1524" layer="91"/>
-<pinref part="J_CON_05" gate="G$1" pin="2"/>
-<junction x="236.22" y="185.42"/>
+<label x="276.86" y="175.26" size="1.778" layer="95"/>
+<wire x1="264.16" y1="190.5" x2="276.86" y2="175.26" width="0.1524" layer="91"/>
+<pinref part="J_CON_02" gate="G$1" pin="2"/>
+<wire x1="243.84" y1="175.26" x2="248.92" y2="175.26" width="0.1524" layer="91"/>
+<wire x1="248.92" y1="175.26" x2="264.16" y2="190.5" width="0.1524" layer="91"/>
+<junction x="264.16" y="190.5"/>
+<pinref part="J_CON_00" gate="G$1" pin="2"/>
+<junction x="243.84" y="175.26"/>
 </segment>
 </net>
 <net name="N$12" class="0">
