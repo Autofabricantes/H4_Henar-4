@@ -1,0 +1,14 @@
+version;4;5;http://eagleup.wordpress.com/;
+settings;C:/EAGLE-7.1.0/models/;C:/Program Files/ImageMagick-7.0.8-Q16/convert.exe;C:/Program Files/ImageMagick-7.0.8-Q16/composite.exe;del;
+color;0x141414;0x202020;silver;ivory;
+images;C:/Users/34663/Documents/GitHub/Henar-4/02_Elements/H4_PadController_Rev_1/01_Resources/eagleUp/;eagleUp_H4_Pad_80x80mm;png;1200;png;
+outline-arc;3.000000;97.000000;3.000000;90.000000;180.000000;1.600000;
+outline-line;3.000000;100.000000;77.000000;100.000000;1.600000;
+outline-arc;77.000000;97.000000;3.000000;0.000000;90.000000;1.600000;
+outline-line;80.000000;97.000000;80.000000;3.000000;1.600000;
+outline-arc;77.000000;3.000000;3.000000;270.000000;360.000000;1.600000;
+outline-line;77.000000;0.000000;3.000000;0.000000;1.600000;
+outline-arc;3.000000;3.000000;3.000000;180.000000;270.000000;1.600000;
+outline-line;0.000000;3.000000;0.000000;97.000000;1.600000;
+outline;0.000000;0.000000;80.000000;100.000000;1.600000;
+outline-complete;1.60;

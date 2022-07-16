@@ -53,9 +53,10 @@ void H4_PadController::set_padConfiguration(int primaryColor, int secondaryColor
   }
   Wire.endTransmission();
   int setChMSSG[9] = {SET_CH, CH_On_0, CH_On_1, CH_On_2, CH_On_3, CH_Thr_0, CH_Thr_1, CH_Thr_2, CH_Thr_3};
+  
   Wire.beginTransmission(CONF.i2cDIR); 
   for(int i = 0; i < 9; i++){
-    Wire.write(setColorMSSG[i]);
+    Wire.write(setChMSSG[i]);
   }
   Wire.endTransmission();
 };
@@ -96,9 +97,9 @@ int H4_PadController::get_padEvent(int CH_ID){
 
 void H4_PadController::recieveResponse(int HowMany){
   int i = 0;
-  /*Serial.print("\n I2C RECIEVE for I2C ");
-  Serial.print(CONF.i2cDIR);
-  Serial.print(" : ");*/
+  //Serial.print("\n I2C RECIEVE for I2C ");
+  //Serial.print(CONF.i2cDIR);
+  //Serial.print(" : ");
   while(Wire.available()){ // loop through all but the last
     char in = Wire.read();    // receive byte as an integer
     inMssgLocal[i] = in;

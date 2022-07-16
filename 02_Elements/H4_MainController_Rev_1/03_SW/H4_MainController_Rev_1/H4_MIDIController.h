@@ -10,7 +10,7 @@
 //#include "H4_WireController.h"
 
 const int NOTEDURATION          = 200;
-const int nPADNOTE              = 11;
+const int nPADNOTE              = 18;
 const byte MIN_MIDIVELOCITY     = 60;
 const byte MAX_MIDIVELOCITY     = 127;
 
@@ -78,12 +78,12 @@ const byte FULL_R     =  150     ;const byte FULL_G     =  150    ;const byte FU
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------Musical Parameters--------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------
-const byte SCALES[6][nPADNOTE] = {{NOTE_C0,  NOTE_D0,   NOTE_E0,   NOTE_F0,   NOTE_G0,   NOTE_A0,   NOTE_B0,  NOTE_C1,  NOTE_D1,   NOTE_E1,   NOTE_F1},   // Escala Mayor             I-II-III-IV-V-VI-VII
-                            {NOTE_C0,  NOTE_D0,   NOTE_D0s,  NOTE_F0,   NOTE_G0,   NOTE_A0,   NOTE_A0s, NOTE_C1,  NOTE_D0,   NOTE_D0s,  NOTE_F0},   // Escala Menor Natural     I-II-IIIb-IV-V-VI-VIIb
-                            {NOTE_C0,  NOTE_E0,   NOTE_G0,   NOTE_B0,   NOTE_C1,   NOTE_E1,   NOTE_G1,  NOTE_C1,  NOTE_E0,   NOTE_G0,   NOTE_B0},   // Escala Arpegio Maj7      I-III-V-VII-I'-III'-V'
-                            {NOTE_C0,  NOTE_D0s,  NOTE_G0,   NOTE_A0s,  NOTE_C1,   NOTE_D1s,  NOTE_G1,  NOTE_C1,  NOTE_D0s,  NOTE_G0,   NOTE_A0s},   // Escala Arpegio Men7      I-IIb-V-VIIb-I'-IIIb'-V'
-                            {NOTE_C0,  NOTE_D0,   NOTE_E0,   NOTE_G0,   NOTE_A0,   NOTE_C1,   NOTE_D1,  NOTE_C1,  NOTE_D0,   NOTE_E0,   NOTE_G0},   // Escala Pentatonico Mayor I-II-III-V-VI-I'-II'
-                            {NOTE_D0s, NOTE_F0,   NOTE_F0,   NOTE_G0,   NOTE_A0s,  NOTE_C1,   NOTE_D1s, NOTE_D1s, NOTE_F0,   NOTE_F0,   NOTE_G0}   // Escala Pentatonico Menor I-IIIb-IV-VIIb-I'-IIIb'
+const byte SCALES[6][nPADNOTE] = {{NOTE_A0, NOTE_A0s, NOTE_B0, NOTE_C1, NOTE_C1s, NOTE_D1, NOTE_D1s, NOTE_E1, NOTE_F1, NOTE_F1s, NOTE_G1, NOTE_G1s, NOTE_A1, NOTE_A1s, NOTE_B1, NOTE_C2, NOTE_C2s, NOTE_D2},   // Escala Mayor             I-II-III-IV-V-VI-VII
+                            {NOTE_A0, NOTE_A0s, NOTE_B0, NOTE_C1, NOTE_C1s, NOTE_D1, NOTE_D1s, NOTE_E1, NOTE_F1, NOTE_F1s, NOTE_G1, NOTE_G1s, NOTE_A1, NOTE_A1s, NOTE_B1, NOTE_C2, NOTE_C2s, NOTE_D2},   // Escala Menor Natural     I-II-IIIb-IV-V-VI-VIIb
+                            {NOTE_A0, NOTE_A0s, NOTE_B0, NOTE_C1, NOTE_C1s, NOTE_D1, NOTE_D1s, NOTE_E1, NOTE_F1, NOTE_F1s, NOTE_G1, NOTE_G1s, NOTE_A1, NOTE_A1s, NOTE_B1, NOTE_C2, NOTE_C2s, NOTE_D2},   // Escala Arpegio Maj7      I-III-V-VII-I'-III'-V'
+                            {NOTE_A0, NOTE_A0s, NOTE_B0, NOTE_C1, NOTE_C1s, NOTE_D1, NOTE_D1s, NOTE_E1, NOTE_F1, NOTE_F1s, NOTE_G1, NOTE_G1s, NOTE_A1, NOTE_A1s, NOTE_B1, NOTE_C2, NOTE_C2s, NOTE_D2},   // Escala Arpegio Men7      I-IIb-V-VIIb-I'-IIIb'-V'
+                            {NOTE_A0, NOTE_A0s, NOTE_B0, NOTE_C1, NOTE_C1s, NOTE_D1, NOTE_D1s, NOTE_E1, NOTE_F1, NOTE_F1s, NOTE_G1, NOTE_G1s, NOTE_A1, NOTE_A1s, NOTE_B1, NOTE_C2, NOTE_C2s, NOTE_D2},   // Escala Pentatonico Mayor I-II-III-V-VI-I'-II'
+                            {NOTE_A0, NOTE_A0s, NOTE_B0, NOTE_C1, NOTE_C1s, NOTE_D1, NOTE_D1s, NOTE_E1, NOTE_F1, NOTE_F1s, NOTE_G1, NOTE_G1s, NOTE_A1, NOTE_A1s, NOTE_B1, NOTE_C2, NOTE_C2s, NOTE_D2}   // Escala Pentatonico Menor I-IIIb-IV-VIIb-I'-IIIb'
 };  
     
 

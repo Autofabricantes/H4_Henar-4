@@ -49,10 +49,10 @@ const bool DEFAULT_CH_On_0 = 1;           // ON
 const bool DEFAULT_CH_On_1 = 0;           // OFF
 const bool DEFAULT_CH_On_2 = 0;           // OFF
 const bool DEFAULT_CH_On_3 = 0;           // OFF
-const int DEFAULT_CH_Thr_0 = 20;          // AVERAGE
-const int DEFAULT_CH_Thr_1 = 20;          // AVERAGE
-const int DEFAULT_CH_Thr_2 = 20;          // AVERAGE
-const int DEFAULT_CH_Thr_3 = 20;          // AVERAGE
+const int DEFAULT_CH_Thr_0 = 40;          // AVERAGE
+const int DEFAULT_CH_Thr_1 = 40;          // AVERAGE
+const int DEFAULT_CH_Thr_2 = 40;          // AVERAGE
+const int DEFAULT_CH_Thr_3 = 40;          // AVERAGE
 
 // Pad Control values
 const int NO_EVENT = 2;

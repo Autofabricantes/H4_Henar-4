@@ -1,0 +1,74 @@
+Partlist
+
+Exported from H4_MainController_Rev_1.brd at 10/05/2022 11:15
+
+EAGLE Version 7.6.0 Copyright (c) 1988-2016 CadSoft
+
+Assembly variant: 
+
+Part         Value               Package             Library                           Position (mm)         Orientation
+
+C_LED        100uF               C1210               adafruit                          (11 68)               R0
+C_LED_00     100nF               C0805K              adafruit                          (6.5 61.5)            R90
+C_LED_01     100nF               C0805K              adafruit                          (6.5 52.5)            R90
+C_LED_02     100nF               C0805K              adafruit                          (6.5 43.5)            R90
+C_LED_03     100nF               C0805K              adafruit                          (6.5 34.5)            R90
+C_LED_04     100nF               C0805K              adafruit                          (6.5 25.5)            R90
+C_LED_05     100nF               C0805K              adafruit                          (6.5 16.5)            R90
+C_LED_ARD_00 100nF               C0805K              adafruit                          (64 15)               R90
+C_LED_ARD_01 100nF               C0805K              adafruit                          (64 5)                R90
+C_VR_0       330nF               C0805               adafruit                          (81.5 51.5)           R90
+C_VR_1       100nF               C0805               adafruit                          (81.5 56.5)           R270
+J_CON_00                         1X02_2.54_SCREWTERM SparkFun-Connectors               (9.75 3)              R0
+J_CON_01                         1X02_2.54_SCREWTERM SparkFun-Connectors               (28.75 3)             R0
+J_CON_02                         1X02_2.54_SCREWTERM SparkFun-Connectors               (23.75 3)             R0
+J_CON_03                         1X02_2.54_SCREWTERM SparkFun-Connectors               (14.75 3)             R0
+J_MIDI       MIDI_CONN_FEMALE    DIN_5_FEMALE        SparkFun-Connectors               (91 37)               R90
+J_PW                             DCJ0303             con-jack                          (89 54)               R90
+J_PWSW                           1X02_2.54_SCREWTERM SparkFun-Connectors               (84.25 64)            R180
+J_PWSW_0                         1X02_2.54_SCREWTERM SparkFun-Connectors               (79.25 64)            R180
+J_SW_00                          1X02_2.54_SCREWTERM SparkFun-Connectors               (70 64)               R180
+J_SW_01                          1X02_2.54_SCREWTERM SparkFun-Connectors               (65 64)               R180
+J_SW_02                          1X02_2.54_SCREWTERM SparkFun-Connectors               (56.25 64)            R180
+J_SW_03                          1X02_2.54_SCREWTERM SparkFun-Connectors               (51.25 64)            R180
+L_RGB_0                          WS2812B             SparkFun-LED                      (11 61.5)             R90
+L_RGB_1                          WS2812B             SparkFun-LED                      (11 52.5)             R90
+L_RGB_2                          WS2812B             SparkFun-LED                      (11 43.5)             R90
+L_RGB_3                          WS2812B             SparkFun-LED                      (11 34.5)             R90
+L_RGB_4                          WS2812B             SparkFun-LED                      (11 25.5)             R90
+L_RGB_5                          WS2812B             SparkFun-LED                      (11 16.5)             R90
+L_RGB_ARD_00                     WS2812B             SparkFun-LED                      (60 15)               R90
+L_RGB_ARD_01                     WS2812B             SparkFun-LED                      (60 5)                R90
+R_ARD_RX     0Ohm                M0805               adafruit                          (71 31)               R0
+R_ARD_TX     0Ohm                M0805               adafruit                          (71 28)               R0
+R_ESP_I2C_0  0Ohm                M0805               adafruit                          (21 12)               R270
+R_ESP_I2C_1  0Ohm                M0805               adafruit                          (18 12)               R270
+R_ESP_RX     0Ohm                M0805               adafruit                          (71 47)               R0
+R_ESP_RX_2   0Ohm                M0805               adafruit                          (71 39)               R0
+R_ESP_TX     0Ohm                M0805               adafruit                          (71 44)               R0
+R_ESP_TX_2   0Ohm                M0805               adafruit                          (71 36)               R0
+R_I2C_0      10kOhm              M0805               adafruit                          (28.5 12)             R90
+R_I2C_1      10kOhm              M0805               adafruit                          (25.5 12)             R270
+R_LED        47Ohm               M0805               adafruit                          (7 68)                R90
+R_MIDI_0     220Ohm              M0805               adafruit                          (80 42.5)             R0
+R_MIDI_1     220Ohm              M0805               adafruit                          (80 32.5)             R0
+R_PAD_00     220Ohm              M0805               adafruit                          (2.5 12)              R180
+R_PAD_01     220Ohm              M0805               adafruit                          (2.5 21)              R180
+R_PAD_02     220Ohm              M0805               adafruit                          (2.5 30)              R180
+R_PAD_03     220Ohm              M0805               adafruit                          (2.5 39)              R180
+R_SW_0       10kOhm              M0805               adafruit                          (52 11)               R180
+R_SW_1       10kOhm              M0805               adafruit                          (45 11)               R180
+R_SW_02      10kOhm              M0805               adafruit                          (38 11)               R180
+R_SW_RST     10kOhm              M0805               adafruit                          (89.5 63.5)           R270
+SW_00        PTS525SM08          SM08                pts525_20                         (52 5)                R270
+SW_01        PTS525SM08          SM08                pts525_20                         (45 5)                R270
+SW_02        PTS525SM08          SM08                pts525_20                         (38 5)                R270
+SW_RST       PTS525SM08          SM08                pts525_20                         (95 64)               R0
+U_0          ARDUINO_MINI        ARDUINO_MINI        SparkFun-Boards                   (83.5 16)             R270
+U_1          ESP32_DEVKIT        ESP32_DEVKIT        DOIT_ESP32_DEVKIT                 (30 75)               R180
+U_PAD_0      PAD_CONNECTOR_MULTI PAD_CONNECTOR_MULTI atfHenar_customLib                (2 16.5)              R180
+U_PAD_1      PAD_CONNECTOR_MULTI PAD_CONNECTOR_MULTI atfHenar_customLib                (2 25.5)              R180
+U_PAD_2      PAD_CONNECTOR_MULTI PAD_CONNECTOR_MULTI atfHenar_customLib                (2 34.5)              R180
+U_PAD_3      PAD_CONNECTOR_MULTI PAD_CONNECTOR_MULTI atfHenar_customLib                (2 43.5)              R180
+U_PAD_GND    PAD_CONNECTOR_MULTI PAD_CONNECTOR_MULTI atfHenar_customLib                (2 62)                R180
+U_VR_0       MC78GENERICDT       DPAK-3              _hhn_78xx_79xx_NCV78xx_d2pak_dpak (69.5 53.5)           R90
