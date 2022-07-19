@@ -39,6 +39,7 @@ const int SIGNATURE = 90;      // Signature 0x5A 0x01011010 -> Very hard to be r
 const int INIT_ADDR = 1;  // EEPROM Init Address
 // Default values for all the configuration parameters
 const uint8_t DEFAULT_i2cDIR_Stored = 8;  // DEFAULT
+const int DEFAULT_offColor = BLACK_OFF;      // BLACK_OFF
 const int DEFAULT_primaryColor = TURQOUISE_HIGH;      // TURQOUISE_HIGH
 const int DEFAULT_secondaryColor = WHITE_LOW;     // WHITE_LOW
 const int DEFAULT_disconnectedColor = 4;  // RED_BRIGHT
@@ -98,7 +99,7 @@ class H4_PadController
     void set_padInstruction(byte channelCode, byte instructionCode_0, byte instructionCode_1, byte pitchCode, byte velocityCode_0, byte velocityCode_1);
     void set_padLedActivity(int ledActivity_id, int ledActivity_primaryCode, int ledActivity_secondaryCode, int ledActivity_duration);
     int controllerId;
-    bool padPressed = 0;
+    bool padPressed[4] = {0,0,0,0};
 
     // Structure to easily manage all the parameters
     struct padInstruction{

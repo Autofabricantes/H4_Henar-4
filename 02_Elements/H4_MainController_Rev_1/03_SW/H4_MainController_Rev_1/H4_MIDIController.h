@@ -63,18 +63,7 @@ const byte NOTE_G6s = 80  ;const byte NOTE_G7s = 92  ;const byte NOTE_G8s =104  
 const byte NOTE_A6  = 81  ;const byte NOTE_A7  = 93  ;const byte NOTE_A8  =105  ;const byte NOTE_A9  =117;
 const byte NOTE_A6s = 82  ;const byte NOTE_A7s = 94  ;const byte NOTE_A8s =106  ;const byte NOTE_A9s =118;
 const byte NOTE_B6  = 83  ;const byte NOTE_B7  = 95  ;const byte NOTE_B8  =107  ;const byte NOTE_B9  =119;
-
-//------------------------------------------------------------------------------------------------------------------------------------------
-// COLOR RED [0:255]          || COLOR GREEN [0:255]         || COLOR BLUE [0:255]           || Comments
-//------------------------------------------------------------------------------------------------------------------------------------------
-const byte GEN_R_L0   =  0       ;const byte GEN_G_L0   =  50     ;const byte GEN_B_L0  =   40;      // RGB L0
-const byte GEN_R_L1   =  10      ;const byte GEN_G_L1   =  40     ;const byte GEN_B_L1  =   50;      // RGB L1
-const byte GEN_R_L2   =  20      ;const byte GEN_G_L2   =  30     ;const byte GEN_B_L2  =   0;       // RGB L2
-const byte GEN_R_L3   =  30      ;const byte GEN_G_L3   =  20     ;const byte GEN_B_L3  =   10;      // RGB L3
-const byte GEN_R_L4   =  40      ;const byte GEN_G_L4   =  10     ;const byte GEN_B_L4  =   20;      // RGB L4
-const byte GEN_R_L5   =  50      ;const byte GEN_G_L5   =  0      ;const byte GEN_B_L5  =   30;      // RGB L5
-const byte FULL_R     =  150     ;const byte FULL_G     =  150    ;const byte FULL_B    =   150;     // FULL WHITE
-
+const byte NONOTE   =127;
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------Musical Parameters--------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------
@@ -86,7 +75,21 @@ const byte SCALES[6][nPADNOTE] = {{NOTE_A0, NOTE_A0s, NOTE_B0, NOTE_C1, NOTE_C1s
                             {NOTE_A0, NOTE_A0s, NOTE_B0, NOTE_C1, NOTE_C1s, NOTE_D1, NOTE_D1s, NOTE_E1, NOTE_F1, NOTE_F1s, NOTE_G1, NOTE_G1s, NOTE_A1, NOTE_A1s, NOTE_B1, NOTE_C2, NOTE_C2s, NOTE_D2}   // Escala Pentatonico Menor I-IIIb-IV-VIIb-I'-IIIb'
 };  
     
+/*const byte SCALEPRO[6][nPADNOTE] = {{NOTE_C0, NOTE_D0, NOTE_E0, NOTE_F0, NOTE_G0, NOTE_A0, NOTE_B0, NOTE_C1, NOTE_D1, NOTE_E1},   // Escala Mayor             I-II-III-IV-V-VI-VII
+                            {NOTE_C0, NOTE_D0, NOTE_D0s, NOTE_F0, NOTE_G0, NOTE_A0, NOTE_A0s, NOTE_C1, NOTE_D1, NOTE_D1s},   // Escala Menor Natural     I-II-IIIb-IV-V-VI-VIIb
+                            {NOTE_C0, NOTE_E0, NOTE_G0, NOTE_B0, NOTE_C1, NOTE_E1, NOTE_G1, NOTE_B1, NOTE_C2, NOTE_E2},   // Escala Arpegio Maj7      I-III-V-VII-I'-III'-V'
+                            {NOTE_C0, NOTE_D0s, NOTE_G0, NOTE_A0s, NOTE_C1, NOTE_D1s, NOTE_G1, NOTE_A1s, NOTE_C2, NOTE_D2s},   // Escala Arpegio Men7      I-IIb-V-VIIb-I'-IIIb'-V'
+                            {NOTE_C0, NOTE_D0, NOTE_E0, NOTE_G0, NOTE_A0, NOTE_C1, NOTE_D1, NOTE_E1, NOTE_G1, NOTE_A1},   // Escala Pentatonico Mayor I-II-III-V-VI-I'-II'
+                            {NOTE_C0, NOTE_D0s, NOTE_F0, NOTE_G0, NOTE_A0s, NOTE_C1, NOTE_D1s, NOTE_F1, NOTE_G1, NOTE_A1s}   // Escala Pentatonico Menor I-IIIb-IV-VIIb-I'-IIIb'
+}; */
 
+const byte SCALEPRO[6][nPADNOTE] = {{NOTE_C0, NONOTE, NOTE_D0, NOTE_E0, NONOTE, NOTE_F0, NONOTE, NOTE_G0, NOTE_A0, NONOTE, NOTE_B0, NONOTE, NOTE_C1, NONOTE, NOTE_D1, NOTE_E1, NONOTE, NOTE_F1},   // Escala Mayor             I-II-III-IV-V-VI-VII
+                                    {NOTE_C0, NONOTE, NOTE_D0, NOTE_D0s, NONOTE, NOTE_F0, NONOTE, NOTE_G0, NOTE_A0, NONOTE, NOTE_A0s, NONOTE, NOTE_C1, NONOTE, NOTE_D1, NOTE_D1s, NONOTE, NOTE_F1},   // Escala Menor Natural     I-II-IIIb-IV-V-VI-VIIb
+                                    {NOTE_C0, NONOTE, NOTE_E0, NOTE_G0, NONOTE, NOTE_B0, NONOTE, NOTE_C1, NOTE_E1, NONOTE, NOTE_G1, NONOTE, NOTE_B1, NONOTE, NOTE_C2, NOTE_E2, NONOTE, NOTE_G2},   // Escala Arpegio Maj7      I-III-V-VII-I'-III'-V'
+                                    {NOTE_C0, NONOTE, NOTE_D0s, NOTE_G0, NONOTE, NOTE_A0s, NONOTE, NOTE_C1, NOTE_D1s, NONOTE, NOTE_G1, NONOTE, NOTE_A1s, NONOTE, NOTE_C2, NOTE_D2s, NONOTE, NOTE_G2},   // Escala Arpegio Men7      I-IIb-V-VIIb-I'-IIIb'-V'
+                                    {NOTE_C0, NONOTE, NOTE_D0, NOTE_E0, NONOTE, NOTE_G0, NONOTE, NOTE_A0, NOTE_C1, NONOTE, NOTE_D1, NONOTE, NOTE_E1, NONOTE, NOTE_G1, NOTE_A1, NONOTE, NOTE_C2},   // Escala Pentatonico Mayor I-II-III-V-VI-I'-II'
+                                    {NOTE_C0, NONOTE, NOTE_D0s, NOTE_F0, NONOTE, NOTE_G0, NONOTE, NOTE_A0s, NOTE_C1, NONOTE, NOTE_D1s, NONOTE, NOTE_F1, NONOTE, NOTE_G1, NOTE_A1s, NONOTE, NOTE_C2}   // Escala Pentatonico Menor I-IIIb-IV-VIIb-I'-IIIb'
+}; 
 
 //extern H4_WireController WireController;
 

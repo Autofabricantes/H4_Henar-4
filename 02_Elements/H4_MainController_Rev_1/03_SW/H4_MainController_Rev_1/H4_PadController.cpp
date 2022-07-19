@@ -84,10 +84,10 @@ int H4_PadController::get_padEvent(int CH_ID){
   int padEvent = 5 + CH_ID;
   
   if((!padPressed)&&(inMssgLocal[padNow] == 1)){
-    padPressed = true;
+    padPressed[CH_ID] = true;
     return EVENT_TO_ON;
-  }else if((padPressed)&&(inMssgLocal[padNow] == 0)){
-    padPressed = false;
+  }else if((padPressed[CH_ID])&&(inMssgLocal[padNow] == 0)){
+    padPressed[CH_ID] = false;
     return EVENT_TO_OFF;
   }else{
     return NO_EVENT;
