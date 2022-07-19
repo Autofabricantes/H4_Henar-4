@@ -43,8 +43,7 @@ const byte PadInstrumentColor[6][2] = {{TURQOUISE_HIGH, WHITE_LOW},     // Escal
 };
 
 const byte PadOctaverColor[2][2] = {{BLUE_LOW, WHITE_LOW},
-                            {BLACK_OFF, BLACK_OFF},
-};
+                            {BLUE_HIGH, WHITE_LOW}};
 
 const byte PadProNaturalColor[2][2] = {{GREEN_LOW, WHITE_LOW},
                                        {BLACK_OFF, BLACK_OFF},
@@ -68,7 +67,8 @@ const byte PadModeColor[2][2] = {{RED_LOW, WHITE_LOW},
 // -----------------------------------------------------------------------------------------------------------------------------------------
 int inMssg[10] = {0,0,0,0,0,0,0,0,0,0};
 
-int PadProActivation[18] = {1,0,1,1,0,1,0,1,1,0,1,0,1,0,1,1,0,1};
+int PadProActivation[2][18] = {{1,0,1,1,0,1,0,1,1,0,1,0,1,0,1,1,0,1},
+                              {1,0,1,1,0,1,0,1,1,0,1,0,1,0,1,1,0,1}};
 
 H4_PadController PadNotes[qPadNotes] = {H4_PadController(0,14),
                                  H4_PadController(1,37),
@@ -168,117 +168,117 @@ void change_i2cDir(int oldDir, int newDir){
 void read_allPads(){
   int padResult = 0;
   for(int i = 0; i < qPadNotes; i++){
-    if(currentProNatural == NATURAL){
       padResult = PadNotes[i].get_padEvent(0);
       if(padResult == EVENT_TO_ON){
         MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_0, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)), (byte)PadNotes[i].INSTRUCTION.velocityCode_0);
       }else if(padResult == EVENT_TO_OFF){
         MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_1, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)), (byte)PadNotes[i].INSTRUCTION.velocityCode_1);
       }
-    }else{
-      if(PadProActivation[i]){
-        padResult = PadNotes[i].get_padEvent(0);
-        if(padResult == EVENT_TO_ON){
-          //PadNotes[i].INSTRUCTION.pitchCode = SCALESPRO[currentScale][i];
-          MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_0, (byte)(SCALEPRO[currentScale][i] + currentMode + ((currentOctave) * 12)), (byte)PadNotes[i].INSTRUCTION.velocityCode_0);
-        }else if(padResult == EVENT_TO_OFF){
-          MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_1, (byte)(SCALEPRO[currentScale][i] + currentMode + ((currentOctave) * 12)), (byte)PadNotes[i].INSTRUCTION.velocityCode_1);
-        }
-      }
-    }
   }
 }
 
-void setColor_allPads(int primaryColor, int secondaryColor){
-  int padResult = 0;
+/**
+ * @brief Sets all the PadNotes to the according configuration regarding scale, instrument, and ProNatural mode
+ */
+void set_allPadNote(int scaleId, int instrumentId, boolean proNaturalMode){
+   // Initialize values
+   int primaryColorToSet;
+   int secondaryColorToSet;
+   int scaleToSet;
+   boolean ch1ActivationToSet;
+   for(int i = 0; i < qPadNotes; i++){
+    if(proNaturalMode == NATURAL){
+      // Natural Mode
+      primaryColorToSet = PadInstrumentColor[instrumentId][0];
+      secondaryColorToSet = PadInstrumentColor[instrumentId][1];
+      scaleToSet = NATURAALSCALE;
+      ch1ActivationToSet = PadProActivation[proNaturalMode][i];
+    }else{
+      // Pro Mode
+      primaryColorToSet = PadInstrumentColor[instrumentId][0];
+      secondaryColorToSet = PadInstrumentColor[instrumentId][1];
+      scaleToSet = 1 + scaleId;
+      ch1ActivationToSet = PadProActivation[proNaturalMode][i];
+      if(PadProActivation[proNaturalMode][i]){
+        // Not active Pad
+        primaryColorToSet = OFFCOLOR;
+        secondaryColorToSet = OFFCOLOR;
+      }
+    }
+       // Set the led with the defined configuration      
+       PadNotes[i].set_padConfiguration(primaryColorToSet,secondaryColorToSet,
+                                  DISCONNECTEDCOLOR,CONNECTEDCOLOR,
+                                  BLINKDURATION,FADEDURATION,
+                                  PadProActivation[proNaturalMode][i],CH_OFF,CH_OFF,CH_OFF,
+                                  CH_THR,CH_THR,CH_THR,CH_THR);
+       PadNotes[i].set_padInstruction(instrumentId, NOTE_ON, NOTE_OFF, SCALES[scaleToSet][i], MAX_MIDIVELOCITY, 0);
+    }
+    swipeColor_allPads();   // Makes the visual changes to the new configuration
+}
+
+/**
+ * @brief Makes a color swipe of all the PadNotes from beginning to end
+ */
+void swipeColor_allPads(){
+  // Turn them all to ON
   for(int i = 0; i < qPadNotes; i++){
-    PadNotes[i].set_padConfiguration(primaryColor,
-                                  secondaryColor,
-                                  PadNotes[i].CONF.disconnectedColor,
-                                  PadNotes[i].CONF.connectedColor,
-                                  PadNotes[i].CONF.blinkDuration,PadNotes[i].CONF.fadeDuration,
-                                  PadNotes[i].CONF.CH_On_0,PadNotes[i].CONF.CH_On_1,PadNotes[i].CONF.CH_On_2,PadNotes[i].CONF.CH_On_3,
-                                  PadNotes[i].CONF.CH_Thr_0,PadNotes[i].CONF.CH_Thr_1,PadNotes[i].CONF.CH_Thr_2,PadNotes[i].CONF.CH_Thr_3);
-     PadNotes[i].set_padLedActivity(LED_ID_FADEFROMNUCLEO, primaryColor, secondaryColor, PadNotes[i].CONF.fadeDuration);
-     delay(20);
+    PadNotes[i].set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadNotes[i].CONF.primaryColor, PadNotes[i].CONF.secondaryColor, PadNotes[i].CONF.fadeDuration);
+    delay(50);
+  }
+  // Turn them all to OFF
+    for(int i = 0; i < qPadNotes; i++){
+    PadNotes[i].set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadNotes[i].CONF.secondaryColor, PadNotes[i].CONF.primaryColor, PadNotes[i].CONF.fadeDuration);
+    delay(50);
+  }
+}
+
+void individualSwipeColor_SinglePad(H4_PadController *padToPerform){
+   padToPerform->set_padLedActivity(LED_ID_FADEFROMNUCLEO, padToPerform->CONF.primaryColor, padToPerform->CONF.secondaryColor, padToPerform->CONF.fadeDuration);
+   delay(50);
+   padToPerform->set_padLedActivity(LED_ID_FADEFROMNUCLEO, padToPerform->CONF.secondaryColor, padToPerform->CONF.primaryColor, padToPerform->CONF.fadeDuration);
+}
+
+/**
+ * @brief Makes a color swipe of all the PadNotes from beginning to end
+ */
+void individualSwipeColor_allPads(){
+  // Turn them all to ON
+  for(int i = 0; i < qPadNotes; i++){
+    PadNotes[i].set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadNotes[i].CONF.primaryColor, PadNotes[i].CONF.secondaryColor, PadNotes[i].CONF.fadeDuration);
+    delay(50 + PadNotes[i].CONF.fadeDuration);
+    PadNotes[i].set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadNotes[i].CONF.secondaryColor, PadNotes[i].CONF.primaryColor, PadNotes[i].CONF.fadeDuration);
   }
 }
 
 void padInitializationSequence(){
-  for(int i = 0; i < qPadNotes; i++){
-    if(currentProNatural == NATURAL){
-       PadNotes[i].set_padConfiguration(PadInstrumentColor[currentInstrument][0],PadInstrumentColor[currentInstrument][1],
-                                  DEFAULT_disconnectedColor,DEFAULT_connectedColor,
-                                  DEFAULT_blinkDuration,DEFAULT_fadeDuration,
-                                  DEFAULT_CH_On_0,DEFAULT_CH_On_1,DEFAULT_CH_On_2,DEFAULT_CH_On_3,
-                                  DEFAULT_CH_Thr_0,DEFAULT_CH_Thr_1,DEFAULT_CH_Thr_2,DEFAULT_CH_Thr_3);
-       PadNotes[i].set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadInstrumentColor[currentInstrument][1], PadInstrumentColor[currentInstrument][0], DEFAULT_fadeDuration);
-       PadNotes[i].set_padInstruction(currentInstrument, NOTE_ON, NOTE_OFF, SCALES[currentScale][i], MAX_MIDIVELOCITY, 0);
-       delay(50);
-    }else{
-      if(PadProActivation[i]){
-         PadNotes[i].set_padConfiguration(PadInstrumentColor[currentInstrument][0],PadInstrumentColor[currentInstrument][1],
-                                      DEFAULT_disconnectedColor,DEFAULT_connectedColor,
-                                      DEFAULT_blinkDuration,DEFAULT_fadeDuration,
-                                      DEFAULT_CH_On_0,DEFAULT_CH_On_1,DEFAULT_CH_On_2,DEFAULT_CH_On_3,
-                                      DEFAULT_CH_Thr_0,DEFAULT_CH_Thr_1,DEFAULT_CH_Thr_2,DEFAULT_CH_Thr_3);
-         PadNotes[i].set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadInstrumentColor[currentInstrument][1], PadInstrumentColor[currentInstrument][0], DEFAULT_fadeDuration);
-         PadNotes[i].set_padInstruction(currentInstrument, NOTE_ON, NOTE_OFF, SCALES[currentScale][i], MAX_MIDIVELOCITY, 0);
-         delay(50);
-      }else{
-         PadNotes[i].set_padConfiguration(DEFAULT_offColor,DEFAULT_offColor,
-                                      DEFAULT_disconnectedColor,DEFAULT_connectedColor,
-                                      DEFAULT_blinkDuration,DEFAULT_fadeDuration,
-                                      0,DEFAULT_CH_On_1,DEFAULT_CH_On_2,DEFAULT_CH_On_3,
-                                      DEFAULT_CH_Thr_0,DEFAULT_CH_Thr_1,DEFAULT_CH_Thr_2,DEFAULT_CH_Thr_3);
-         PadNotes[i].set_padLedActivity(LED_ID_FADEFROMNUCLEO, DEFAULT_offColor, DEFAULT_offColor, DEFAULT_fadeDuration);
-         PadNotes[i].set_padInstruction(currentInstrument, NOTE_ON, NOTE_OFF, SCALES[currentScale][i], MAX_MIDIVELOCITY, 0);
-      }
-    }
-  }
-  delay(50);
-  for(int i = 0; i < qPadNotes; i++){
-    if(currentProNatural == NATURAL){
-      PadNotes[qPadNotes-1-i].set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadInstrumentColor[currentInstrument][0],PadInstrumentColor[currentInstrument][1], DEFAULT_fadeDuration);
-      delay(50);
-    }else{
-      if(PadProActivation[i]){
-        PadNotes[qPadNotes-1-i].set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadInstrumentColor[currentInstrument][0],PadInstrumentColor[currentInstrument][1], DEFAULT_fadeDuration);
-        delay(50);
-      }
-    }
-  }  
+  set_allPadNote(currentScale, currentInstrument, currentProNatural);
 }
 
 void padOctaverInitializationSequence(){
   // Initilize Octaver
   PadOctaver.set_padConfiguration(PadOctaverColor[0][0],
                                     PadOctaverColor[0][1],
-                                    DEFAULT_disconnectedColor,
-                                    DEFAULT_connectedColor,
-                                    DEFAULT_blinkDuration,
-                                    DEFAULT_fadeDuration,
-                                    DEFAULT_CH_On_0,
-                                    DEFAULT_CH_On_1,
-                                    DEFAULT_CH_On_2,
-                                    DEFAULT_CH_On_3,  // Active
-                                    DEFAULT_CH_Thr_0,
-                                    DEFAULT_CH_Thr_1,
-                                    DEFAULT_CH_Thr_2,
-                                    DEFAULT_CH_Thr_3);
+                                    DISCONNECTEDCOLOR,
+                                    CONNECTEDCOLOR,
+                                    BLINKDURATION,
+                                    FADEDURATION,
+                                    CH_ON,CH_OFF,CH_OFF,CH_OFF,
+                                    CH_THR,CH_THR,CH_THR,CH_THR);
    //PadOctaver.set_padInstruction(instrumentCode, NOTE_ON, NOTE_OFF, SCALES[currentScale][i], MAX_MIDIVELOCITY, 0);
-   PadOctaver.set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadOctaverColor[0][0], PadOctaverColor[0][1], PadOctaver.CONF.fadeDuration);
+   individualSwipeColor_SinglePad(&PadOctaver);
+   /*PadOctaver.set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadOctaver.CONF.primaryColor, PadOctaver.CONF.secondaryColor, PadOctaver.CONF.fadeDuration);
    delay(50);
+   PadOctaver.set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadOctaver.CONF.secondaryColor, PadOctaver.CONF.primaryColor, PadOctaver.CONF.fadeDuration);*/
 }
 
 void padInstrumentInitializationSequence(){
   // Initilize Octaver
   PadInstrument.set_padConfiguration(PadInstrumentColor[currentInstrument][0],
                                     PadInstrumentColor[currentInstrument][1],
-                                    DEFAULT_disconnectedColor,DEFAULT_connectedColor,
-                                    DEFAULT_blinkDuration,DEFAULT_fadeDuration,
-                                    DEFAULT_CH_On_0,DEFAULT_CH_On_1,DEFAULT_CH_On_2,DEFAULT_CH_On_0,  // Active
-                                    DEFAULT_CH_Thr_0,DEFAULT_CH_Thr_1,DEFAULT_CH_Thr_2,DEFAULT_CH_Thr_3);
+                                    DISCONNECTEDCOLOR,CONNECTEDCOLOR,
+                                    BLINKDURATION,FADEDURATION,
+                                    CH_ON,CH_OFF,CH_OFF,CH_ON,
+                                    CH_THR,CH_THR,CH_THR,CH_THR);
    //PadInstrument.set_padInstruction(instrumentCode, NOTE_ON, NOTE_OFF, SCALES[currentScale][i], MAX_MIDIVELOCITY, 0);
    PadInstrument.set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadInstrumentColor[currentInstrument][0], PadInstrumentColor[currentInstrument][1], PadInstrument.CONF.fadeDuration);
    delay(50);
@@ -289,23 +289,20 @@ void padScalerInitializationSequence(){
     // Initilize Scaler for Pro MODE:
     PadScaler.set_padConfiguration(PadScalerColor[0][0],
                                       PadScalerColor[0][1],
-                                      DEFAULT_disconnectedColor,DEFAULT_connectedColor,
-                                      DEFAULT_blinkDuration,DEFAULT_fadeDuration,
-                                      DEFAULT_CH_On_0,DEFAULT_CH_On_1,DEFAULT_CH_On_2,
-                                      DEFAULT_CH_On_0,  // Active
-                                      DEFAULT_CH_Thr_0,DEFAULT_CH_Thr_1,DEFAULT_CH_Thr_2,DEFAULT_CH_Thr_3);
+                                      DISCONNECTEDCOLOR,CONNECTEDCOLOR,
+                                      BLINKDURATION,FADEDURATION,
+                                      CH_ON,CH_OFF,CH_OFF,CH_ON,
+                                      CH_THR,CH_THR,CH_THR,CH_THR);
      //PadInstrument.set_padInstruction(instrumentCode, NOTE_ON, NOTE_OFF, SCALES[currentScale][i], MAX_MIDIVELOCITY, 0);
      PadScaler.set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadScalerColor[0][0], PadScalerColor[0][1], PadInstrument.CONF.fadeDuration);
      delay(50);
   }else{
      PadScaler.set_padConfiguration(PadScalerColor[1][0],
                                       PadScalerColor[1][1],
-                                      DEFAULT_disconnectedColor,DEFAULT_connectedColor,
-                                      DEFAULT_blinkDuration,DEFAULT_fadeDuration,
-                                      0,  // Deactivated
-                                      DEFAULT_CH_On_1,DEFAULT_CH_On_2,
-                                      0,  // Deactivated
-                                      DEFAULT_CH_Thr_0,DEFAULT_CH_Thr_1,DEFAULT_CH_Thr_2,DEFAULT_CH_Thr_3);
+                                      DISCONNECTEDCOLOR,CONNECTEDCOLOR,
+                                      BLINKDURATION,FADEDURATION,
+                                      CH_OFF,CH_OFF,CH_OFF,CH_OFF,
+                                      CH_THR,CH_THR,CH_THR,CH_THR);
      //PadInstrument.set_padInstruction(instrumentCode, NOTE_ON, NOTE_OFF, SCALES[currentScale][i], MAX_MIDIVELOCITY, 0);
      PadScaler.set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadScalerColor[1][0], PadScalerColor[1][1], PadInstrument.CONF.fadeDuration);
   }  
@@ -316,11 +313,11 @@ void padModeInitializationSequence(){
     // Initilize Scaler
     PadMode.set_padConfiguration(PadModeColor[0][0],
                                       PadModeColor[0][1],
-                                      DEFAULT_disconnectedColor,DEFAULT_connectedColor,
-                                      DEFAULT_blinkDuration,DEFAULT_fadeDuration,
-                                      DEFAULT_CH_On_0,DEFAULT_CH_On_1,DEFAULT_CH_On_2,
-                                      DEFAULT_CH_On_0,  // Active
-                                      DEFAULT_CH_Thr_0,DEFAULT_CH_Thr_1,DEFAULT_CH_Thr_2,DEFAULT_CH_Thr_3);
+                                      DISCONNECTEDCOLOR,CONNECTEDCOLOR,
+                                      BLINKDURATION,FADEDURATION,
+                                      CH_ON,CH_OFF,CH_OFF,
+                                      CH_ON,  // Active
+                                      CH_THR,CH_THR,CH_THR,CH_THR);
      //PadInstrument.set_padInstruction(instrumentCode, NOTE_ON, NOTE_OFF, SCALES[currentScale][i], MAX_MIDIVELOCITY, 0);
      PadMode.set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadModeColor[0][0], PadModeColor[0][1], PadInstrument.CONF.fadeDuration);
      delay(50);
@@ -328,12 +325,12 @@ void padModeInitializationSequence(){
     // Initilize Scaler
     PadMode.set_padConfiguration(PadModeColor[1][0],
                                       PadModeColor[1][1],
-                                      DEFAULT_disconnectedColor,DEFAULT_connectedColor,
-                                      DEFAULT_blinkDuration,DEFAULT_fadeDuration,
+                                      DISCONNECTEDCOLOR,CONNECTEDCOLOR,
+                                      BLINKDURATION,FADEDURATION,
                                       0,  // Deactivated
-                                      DEFAULT_CH_On_1,DEFAULT_CH_On_2,
+                                      CH_OFF,CH_OFF,
                                       0,  // Deactivated
-                                      DEFAULT_CH_Thr_0,DEFAULT_CH_Thr_1,DEFAULT_CH_Thr_2,DEFAULT_CH_Thr_3);
+                                      CH_THR,CH_THR,CH_THR,CH_THR);
      //PadInstrument.set_padInstruction(instrumentCode, NOTE_ON, NOTE_OFF, SCALES[currentScale][i], MAX_MIDIVELOCITY, 0);
      PadMode.set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadModeColor[1][0], PadModeColor[1][1], PadInstrument.CONF.fadeDuration);
   }
@@ -343,10 +340,10 @@ void padProNaturalInitializationSequence(){
   // Initilize Octaver
   PadProNatural.set_padConfiguration(PadProNaturalColor[0][0],
                                     PadProNaturalColor[0][1],
-                                    DEFAULT_disconnectedColor,DEFAULT_connectedColor,
-                                    DEFAULT_blinkDuration,DEFAULT_fadeDuration,
-                                    DEFAULT_CH_On_0,DEFAULT_CH_On_1,DEFAULT_CH_On_2,DEFAULT_CH_On_3,
-                                    DEFAULT_CH_Thr_0,DEFAULT_CH_Thr_1,DEFAULT_CH_Thr_2,DEFAULT_CH_Thr_3);
+                                    DISCONNECTEDCOLOR,CONNECTEDCOLOR,
+                                    BLINKDURATION,FADEDURATION,
+                                    CH_ON,CH_OFF,CH_OFF,CH_OFF,
+                                    CH_THR,CH_THR,CH_THR,CH_THR);
    //PadInstrument.set_padInstruction(instrumentCode, NOTE_ON, NOTE_OFF, SCALES[currentScale][i], MAX_MIDIVELOCITY, 0);
    PadProNatural.set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadProNaturalColor[0][0], PadProNaturalColor[0][1], PadInstrument.CONF.fadeDuration);
    delay(50);
@@ -357,9 +354,9 @@ void setInstrument_AllPads(int instrumentCode, int setScale){
     if(currentProNatural == NATURAL){
       PadNotes[i].set_padConfiguration(PadInstrumentColor[instrumentCode][0],
                                     PadInstrumentColor[instrumentCode][1],
-                                    DEFAULT_disconnectedColor,DEFAULT_connectedColor,DEFAULT_blinkDuration,DEFAULT_fadeDuration,
-                                    DEFAULT_CH_On_0,DEFAULT_CH_On_1,DEFAULT_CH_On_2,DEFAULT_CH_On_3,
-                                    DEFAULT_CH_Thr_0,DEFAULT_CH_Thr_1,DEFAULT_CH_Thr_2,DEFAULT_CH_Thr_3);
+                                    DISCONNECTEDCOLOR,CONNECTEDCOLOR,BLINKDURATION,FADEDURATION,
+                                    CH_ON,CH_OFF,CH_OFF,CH_OFF,
+                                    CH_THR,CH_THR,CH_THR,CH_THR);
        PadNotes[i].set_padInstruction(instrumentCode, NOTE_ON, NOTE_OFF, SCALES[currentScale][i], MAX_MIDIVELOCITY, 0);
        PadNotes[i].set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadInstrumentColor[instrumentCode][1], PadInstrumentColor[instrumentCode][0], PadNotes[i].CONF.fadeDuration);
        delay(50); 
@@ -367,9 +364,9 @@ void setInstrument_AllPads(int instrumentCode, int setScale){
       if(PadProActivation[i]){
          PadNotes[i].set_padConfiguration(PadInstrumentColor[instrumentCode][0],
                                     PadInstrumentColor[instrumentCode][1],
-                                    DEFAULT_disconnectedColor,DEFAULT_connectedColor,DEFAULT_blinkDuration,DEFAULT_fadeDuration,
-                                    DEFAULT_CH_On_0,DEFAULT_CH_On_1,DEFAULT_CH_On_2,DEFAULT_CH_On_3,
-                                    DEFAULT_CH_Thr_0,DEFAULT_CH_Thr_1,DEFAULT_CH_Thr_2,DEFAULT_CH_Thr_3);
+                                    DISCONNECTEDCOLOR,CONNECTEDCOLOR,BLINKDURATION,FADEDURATION,
+                                    CH_ON,CH_OFF,CH_OFF,CH_OFF,
+                                    CH_THR,CH_THR,CH_THR,CH_THR);
          PadNotes[i].set_padInstruction(instrumentCode, NOTE_ON, NOTE_OFF, SCALES[currentScale][i], MAX_MIDIVELOCITY, 0);
          PadNotes[i].set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadInstrumentColor[instrumentCode][1], PadInstrumentColor[instrumentCode][0], PadNotes[i].CONF.fadeDuration);
          delay(50); 
@@ -422,10 +419,10 @@ void read_instrumentPad(){
       // TODO Change PAD Color
       PadInstrument.set_padConfiguration(PadInstrumentColor[currentInstrument][0],
                               PadInstrumentColor[currentInstrument][1],
-                              DEFAULT_disconnectedColor,DEFAULT_connectedColor,
-                              DEFAULT_blinkDuration,DEFAULT_fadeDuration,
-                              DEFAULT_CH_On_0,DEFAULT_CH_On_1,DEFAULT_CH_On_2,DEFAULT_CH_On_0,
-                              DEFAULT_CH_Thr_0,DEFAULT_CH_Thr_1,DEFAULT_CH_Thr_2,DEFAULT_CH_Thr_3);
+                              DISCONNECTEDCOLOR,CONNECTEDCOLOR,
+                              BLINKDURATION,FADEDURATION,
+                              CH_ON,CH_OFF,CH_OFF,CH_ON,
+                              CH_THR,CH_THR,CH_THR,CH_THR);
       PadInstrument.set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadInstrumentColor[currentInstrument][0], PadInstrumentColor[currentInstrument][1], PadInstrument.CONF.fadeDuration);
       // TODO Send MIDI Message
       //MIDI.MIDI_TX(0, INSTRUMENT, currentInstrument, 0);
@@ -440,10 +437,10 @@ void read_instrumentPad(){
       // TODO Change PAD Color
       PadInstrument.set_padConfiguration(PadInstrumentColor[currentInstrument][0],
                         PadInstrumentColor[currentInstrument][1],
-                        DEFAULT_disconnectedColor,DEFAULT_connectedColor,
-                        DEFAULT_blinkDuration,DEFAULT_fadeDuration,
-                        DEFAULT_CH_On_0,DEFAULT_CH_On_1,DEFAULT_CH_On_2,DEFAULT_CH_On_0,
-                        DEFAULT_CH_Thr_0,DEFAULT_CH_Thr_1,DEFAULT_CH_Thr_2,DEFAULT_CH_Thr_3);
+                        DISCONNECTEDCOLOR,CONNECTEDCOLOR,
+                        BLINKDURATION,FADEDURATION,
+                        CH_ON,CH_OFF,CH_OFF,CH_ON,
+                        CH_THR,CH_THR,CH_THR,CH_THR);
       PadInstrument.set_padLedActivity(LED_ID_FADEFROMNUCLEO, PadInstrumentColor[currentInstrument][0], PadInstrumentColor[currentInstrument][1], PadInstrument.CONF.fadeDuration);
       // TODO Send MIDI Message
       //MIDI.MIDI_TX(0, INSTRUMENT, currentInstrument, 0);

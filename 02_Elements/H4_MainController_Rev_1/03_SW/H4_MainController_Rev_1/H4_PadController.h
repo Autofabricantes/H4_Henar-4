@@ -55,6 +55,15 @@ const int DEFAULT_CH_Thr_1 = 40;          // AVERAGE
 const int DEFAULT_CH_Thr_2 = 40;          // AVERAGE
 const int DEFAULT_CH_Thr_3 = 40;          // AVERAGE
 
+const bool CH_OFF           = 0;           // ON
+const bool CH_ON            = 1;            // OFF
+const bool CH_THR           = 40;           // AVERAGE
+const int DISCONNECTEDCOLOR = RED_HIGH;
+const int CONNECTEDCOLOR    = BLUE_HIGH;
+const int OFFCOLOR          = BLACK_OFF; 
+const int BLINKDURATION     = 30;    // MS
+const int FADEDURATION      = 30;     // MS
+
 // Pad Control values
 const int NO_EVENT = 2;
 const int EVENT_TO_ON = 1;
