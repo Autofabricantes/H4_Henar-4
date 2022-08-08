@@ -50,18 +50,18 @@ const bool DEFAULT_CH_On_0 = 1;           // ON
 const bool DEFAULT_CH_On_1 = 0;           // OFF
 const bool DEFAULT_CH_On_2 = 0;           // OFF
 const bool DEFAULT_CH_On_3 = 0;           // OFF
-const int DEFAULT_CH_Thr_0 = 40;          // AVERAGE
-const int DEFAULT_CH_Thr_1 = 40;          // AVERAGE
-const int DEFAULT_CH_Thr_2 = 40;          // AVERAGE
-const int DEFAULT_CH_Thr_3 = 40;          // AVERAGE
+const int DEFAULT_CH_Thr_0 = 60;          // AVERAGE
+const int DEFAULT_CH_Thr_1 = 60;          // AVERAGE
+const int DEFAULT_CH_Thr_2 = 60;          // AVERAGE
+const int DEFAULT_CH_Thr_3 = 60;          // AVERAGE
 
 const bool CH_OFF           = 0;           // ON
-const bool CH_ON            = 1;            // OFF
-const bool CH_THR           = 40;           // AVERAGE
+const bool CH_ON            = 1;           // OFF
+const byte CH_THR            = 40;          // AVERAGE
 const int DISCONNECTEDCOLOR = RED_HIGH;
 const int CONNECTEDCOLOR    = BLUE_HIGH;
 const int OFFCOLOR          = BLACK_OFF; 
-const int BLINKDURATION     = 30;    // MS
+const int BLINKDURATION     = 30;     // MS
 const int FADEDURATION      = 30;     // MS
 
 // Pad Control values
@@ -90,10 +90,6 @@ const int LED_ID_FADEANDOFFCOLOR_FROMNUCLEO = 4;
 
 // I2C Messages
 const int getChMSSG[1] = {GET_PAD}; 
-    
-    
-    
-
 //extern H4_WireController WireController;
 
 
@@ -104,10 +100,10 @@ class H4_PadController
     H4_PadController(int controllerId, int i2cDir);
     void recieveRequestResponse(int HowMany);
     int get_padEvent(int CH_ID);
-    void set_padConfiguration(int primaryColor, int secondaryColor, int disconnectedColor, int connectedColor, int blinkDuration, int fadeDuration, bool CH_On_0, bool CH_On_1, bool CH_On_2, bool CH_On_3, int CH_Thr_0, int CH_Thr_1, int CH_Thr_2, int CH_Thr_3);
+    void set_padConfiguration(byte primaryColor, byte secondaryColor, byte disconnectedColor, byte connectedColor, byte blinkDuration, byte fadeDuration, bool CH_On_0, bool CH_On_1, bool CH_On_2, bool CH_On_3, byte CH_Thr_0, byte CH_Thr_1, byte CH_Thr_2, byte CH_Thr_3);
     void set_padInstruction(byte channelCode, byte instructionCode_0, byte instructionCode_1, byte pitchCode, byte velocityCode_0, byte velocityCode_1);
-    void set_padLedActivity(int ledActivity_id, int ledActivity_primaryCode, int ledActivity_secondaryCode, int ledActivity_duration);
-    int controllerId;
+    void set_padLedActivity(byte ledActivity_id, byte ledActivity_primaryCode, byte ledActivity_secondaryCode, byte ledActivity_duration);
+    byte controllerId;
     bool padPressed[4] = {0,0,0,0};
 
     // Structure to easily manage all the parameters
@@ -137,27 +133,27 @@ class H4_PadController
     
     struct padConfiguration{
       uint8_t i2cDIR;
-      int primaryColor;
-      int secondaryColor;
-      int disconnectedColor;
-      int connectedColor;
-      int blinkDuration;
-      int fadeDuration;
+      byte primaryColor;
+      byte secondaryColor;
+      byte disconnectedColor;
+      byte connectedColor;
+      byte blinkDuration;
+      byte fadeDuration;
       bool CH_On_0;
       bool CH_On_1;
       bool CH_On_2;
       bool CH_On_3;
-      int CH_Thr_0;
-      int CH_Thr_1;
-      int CH_Thr_2;
-      int CH_Thr_3;
+      byte CH_Thr_0;
+      byte CH_Thr_1;
+      byte CH_Thr_2;
+      byte CH_Thr_3;
     };
 
     padInstruction INSTRUCTION;
     padState STATE;
     padConfiguration CONF;
   private:
-    int inMssgLocal[10] = {0,0,0,0,0,0,0,0,0,0};
+    byte inMssgLocal[10] = {0,0,0,0,0,0,0,0,0,0};
     void recieveResponse(int HowMany);
     //storedConfiguration _localConfiguration
 };

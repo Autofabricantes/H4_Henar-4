@@ -29,7 +29,7 @@ void H4_PadController::set_padInstruction(byte channelCode, byte instructionCode
   INSTRUCTION.velocityCode_1 = velocityCode_1;
 }
 
-void H4_PadController::set_padConfiguration(int primaryColor, int secondaryColor, int disconnectedColor, int connectedColor, int blinkDuration, int fadeDuration, bool CH_On_0, bool CH_On_1, bool CH_On_2, bool CH_On_3, int CH_Thr_0, int CH_Thr_1, int CH_Thr_2, int CH_Thr_3){
+void H4_PadController::set_padConfiguration(byte primaryColor, byte secondaryColor, byte disconnectedColor, byte connectedColor, byte blinkDuration, byte fadeDuration, bool CH_On_0, bool CH_On_1, bool CH_On_2, bool CH_On_3, byte CH_Thr_0, byte CH_Thr_1, byte CH_Thr_2, byte CH_Thr_3){
   // Update local parameters
   CONF.primaryColor = primaryColor;
   CONF.secondaryColor = secondaryColor;
@@ -46,13 +46,13 @@ void H4_PadController::set_padConfiguration(int primaryColor, int secondaryColor
   CONF.CH_Thr_2 = CH_Thr_2;
   CONF.CH_Thr_3 = CH_Thr_3;
   // Send Configuration messages
-  int setColorMSSG[7] = {SET_COLOR, primaryColor, secondaryColor, disconnectedColor, connectedColor, blinkDuration, fadeDuration};
+  byte setColorMSSG[7] = {SET_COLOR, primaryColor, secondaryColor, disconnectedColor, connectedColor, blinkDuration, fadeDuration};
   Wire.beginTransmission(CONF.i2cDIR); 
   for(int i = 0; i < 7; i++){
     Wire.write(setColorMSSG[i]);
   }
   Wire.endTransmission();
-  int setChMSSG[9] = {SET_CH, CH_On_0, CH_On_1, CH_On_2, CH_On_3, CH_Thr_0, CH_Thr_1, CH_Thr_2, CH_Thr_3};
+  byte setChMSSG[9] = {SET_CH, CH_On_0, CH_On_1, CH_On_2, CH_On_3, CH_Thr_0, CH_Thr_1, CH_Thr_2, CH_Thr_3};
   
   Wire.beginTransmission(CONF.i2cDIR); 
   for(int i = 0; i < 9; i++){
@@ -61,9 +61,9 @@ void H4_PadController::set_padConfiguration(int primaryColor, int secondaryColor
   Wire.endTransmission();
 };
 
-void H4_PadController::set_padLedActivity(int ledActivity_id, int ledActivity_primaryCode, int ledActivity_secondaryCode, int ledActivity_duration){
+void H4_PadController::set_padLedActivity(byte ledActivity_id, byte ledActivity_primaryCode, byte ledActivity_secondaryCode, byte ledActivity_duration){
   // Send Configuration messages
-  int setLedActivityMSSG[5] = {SET_LEDACTIVITY, ledActivity_id, ledActivity_primaryCode, ledActivity_secondaryCode, ledActivity_duration};
+  byte setLedActivityMSSG[5] = {SET_LEDACTIVITY, ledActivity_id, ledActivity_primaryCode, ledActivity_secondaryCode, ledActivity_duration};
   Wire.beginTransmission(CONF.i2cDIR); 
   for(int i = 0; i < 5; i++){
     Wire.write(setLedActivityMSSG[i]);
@@ -83,7 +83,7 @@ int H4_PadController::get_padEvent(int CH_ID){
   int padNow = 1 + CH_ID;
   int padEvent = 5 + CH_ID;
   
-  if((!padPressed)&&(inMssgLocal[padNow] == 1)){
+  if((!padPressed[CH_ID])&&(inMssgLocal[padNow] == 1)){
     padPressed[CH_ID] = true;
     return EVENT_TO_ON;
   }else if((padPressed[CH_ID])&&(inMssgLocal[padNow] == 0)){

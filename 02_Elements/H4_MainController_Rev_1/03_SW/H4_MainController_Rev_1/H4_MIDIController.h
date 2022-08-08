@@ -67,13 +67,14 @@ const byte NONOTE   =127;
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------Musical Parameters--------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------  
-/*const byte SCALEPRO[6][nPADNOTE] = {{NOTE_C0, NOTE_D0, NOTE_E0, NOTE_F0, NOTE_G0, NOTE_A0, NOTE_B0, NOTE_C1, NOTE_D1, NOTE_E1},   // Escala Mayor             I-II-III-IV-V-VI-VII
-                            {NOTE_C0, NOTE_D0, NOTE_D0s, NOTE_F0, NOTE_G0, NOTE_A0, NOTE_A0s, NOTE_C1, NOTE_D1, NOTE_D1s},   // Escala Menor Natural     I-II-IIIb-IV-V-VI-VIIb
-                            {NOTE_C0, NOTE_E0, NOTE_G0, NOTE_B0, NOTE_C1, NOTE_E1, NOTE_G1, NOTE_B1, NOTE_C2, NOTE_E2},   // Escala Arpegio Maj7      I-III-V-VII-I'-III'-V'
-                            {NOTE_C0, NOTE_D0s, NOTE_G0, NOTE_A0s, NOTE_C1, NOTE_D1s, NOTE_G1, NOTE_A1s, NOTE_C2, NOTE_D2s},   // Escala Arpegio Men7      I-IIb-V-VIIb-I'-IIIb'-V'
-                            {NOTE_C0, NOTE_D0, NOTE_E0, NOTE_G0, NOTE_A0, NOTE_C1, NOTE_D1, NOTE_E1, NOTE_G1, NOTE_A1},   // Escala Pentatonico Mayor I-II-III-V-VI-I'-II'
-                            {NOTE_C0, NOTE_D0s, NOTE_F0, NOTE_G0, NOTE_A0s, NOTE_C1, NOTE_D1s, NOTE_F1, NOTE_G1, NOTE_A1s}   // Escala Pentatonico Menor I-IIIb-IV-VIIb-I'-IIIb'
-}; */
+
+const byte CH_CONTROL               = 7;
+const byte OFFSET_INSTRUMENT        = NOTE_A1;
+const byte OFFSET_SCALE             = NOTE_A0;
+const byte OFFSET_OCTAVER           = NOTE_B1;
+const byte OFFSET_PRONATURAL        = NOTE_E1;
+const byte OFFSET_BLE               = NOTE_G1s;
+const byte OFFSET_MODE              = NOTE_C2;
 
 const byte NATURAALSCALE       = 0;
 
