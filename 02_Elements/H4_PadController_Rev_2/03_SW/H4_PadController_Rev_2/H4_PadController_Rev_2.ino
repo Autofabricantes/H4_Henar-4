@@ -12,7 +12,7 @@
 #include <EEPROM.h>
 // Modes
 #define PAD_TESTING
-
+#define FIXED_I2C_DIR
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------System Pin Definition-----------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------
@@ -38,34 +38,36 @@ const int pPAD_3            = A3;
 // ---------------------------------------------------Control and Configuration values Definition-------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // Constant Value Definition
-const int i2cDIR                = 8;
+const byte i2cDIR                = 8;
+
+const byte FixedI2cDIR           = 37;
 
 const bool OFF                  = 0;
 const bool ON                   = 1;
-const int STABILIZATION_ITERATOR = 200;
+const byte STABILIZATION_ITERATOR = 200;
 
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------Custom Configuration Structs----------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------
 
 // I2C Values
-const int SET_I2CDIR            = 1;
-const int SET_COLOR             = 2;
-const int GET_COLOR             = 3;
-const int SET_CH                = 4;
-const int GET_CH                = 5;
-const int GET_PAD               = 6;
-const int SET_DEFAULT           = 7;
-const int SET_DEFAULT_NOI2CDIR  = 8;
-const int SET_LEDACTIVITY       = 9;
-const int SET_RESET             = 10;
+const byte SET_I2CDIR            = 1;
+const byte SET_COLOR             = 2;
+const byte GET_COLOR             = 3;
+const byte SET_CH                = 4;
+const byte GET_CH                = 5;
+const byte GET_PAD               = 6;
+const byte SET_DEFAULT           = 7;
+const byte SET_DEFAULT_NOI2CDIR  = 8;
+const byte SET_LEDACTIVITY       = 9;
+const byte SET_RESET             = 10;
 
 // LED Activity IDs
-const int LED_ID_ALLSTRIPE      = 0;
-const int LED_ID_SETOFF         = 1;
-const int LED_ID_BLINKCOLOR     = 2;
-const int LED_ID_FADEFROMNUCLEO = 3;
-const int LED_ID_FADEANDOFFCOLOR_FROMNUCLEO = 4;
+const byte LED_ID_ALLSTRIPE      = 0;
+const byte LED_ID_SETOFF         = 1;
+const byte LED_ID_BLINKCOLOR     = 2;
+const byte LED_ID_FADEFROMNUCLEO = 3;
+const byte LED_ID_FADEANDOFFCOLOR_FROMNUCLEO = 4;
 
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------Global Variables----------------------------------------------------------------------
@@ -81,7 +83,7 @@ H4_AnalogPad PAD_2(pPAD_2, false, 0);
 H4_AnalogPad PAD_3(pPAD_3, false, 0);
 H4_Configuration  CONFIGURATION;
 char requestBuffer[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-int requestBufferLength = 10;
+byte requestBufferLength = 10;
 
 // PAD Flags
 char PAD_ACTIVE_0 = 0;
@@ -95,10 +97,10 @@ boolean recievedWireCmd = false;
 boolean i2cConnected = false;
 // Led Activity Flags:
 boolean performLedActivity    = false;
-int ledActivity_id            = 0;
-int ledActivity_primaryCode   = 0;
-int ledActivity_secondaryCode = 0;
-int ledActivity_duration      = 0;
+byte ledActivity_id            = 0;
+byte ledActivity_primaryCode   = 0;
+byte ledActivity_secondaryCode = 0;
+byte ledActivity_duration      = 0;
 
 void(* resetFunc) (void) = 0;
 
@@ -121,8 +123,14 @@ void setup() {
   Serial.begin(115200);
   // i2C Initialization
   Serial.print("I2C DIR: ");
-  Serial.println(CONFIGURATION.CONF.i2cDIR_Stored);
+#ifdef FIXED_I2C_DIR  
+  // With the Fixed I2C configuration, the device I2C is not retrieved through EEPROM but directly set through a CONST to avoid EEPROM corruption
+  CONFIGURATION.CONF.i2cDIR_Stored = FixedI2cDIR;
+  Wire.begin(FixedI2cDIR);
+#else
   Wire.begin(CONFIGURATION.CONF.i2cDIR_Stored);
+#endif
+  Serial.println(CONFIGURATION.CONF.i2cDIR_Stored);
   //Wire.begin(8);
   Wire.onReceive(receiveEvent); // register event
   Wire.onRequest(requestEvent); // register event

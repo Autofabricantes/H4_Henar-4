@@ -8,13 +8,14 @@
 #include <Wire.h>
 #include "H4_PadController.h"
 #include "H4_MIDIController.h"
+#include "H4_LEDSignal.h"
 // Modes
 #define PAD_TESTING
-
+//#define LEDSIGNALLING
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------System Pin Definition-----------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------
-
+#define LEDSIGNAL     6
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------Control and Configuration values Definition-------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------
@@ -56,6 +57,16 @@ const byte PadModeColor[2][2] = {{BLACK_OFF, BLACK_OFF},
                                    {RED_LOW, WHITE_LOW}
 };
 
+const byte PadVoiceDescriptionColor[2][2] = {{RED_LOW, WHITE_LOW},
+                                   {ORANGE_LOW, WHITE_LOW}
+};
+
+byte controlMessageInstrument[INSTRUMENT_MAX + 1] = {NOTE_C2, NOTE_C2s, NOTE_D2, NOTE_D2s, NOTE_G1s, NOTE_A1};
+byte controlMessageOctaver[OCTAVE_MAX - OCTAVE_MIN + 1] = {NOTE_B1,NOTE_A1s};
+byte controlMessageScaler[SCALE_MAX + 1] = {NOTE_A2, NOTE_A2s, NOTE_B2, NOTE_E2, NOTE_F2, NOTE_F2s};
+byte controlMessageMode[MODE_MAX + 1] = {NOTE_C0, NOTE_C0s, NOTE_D0, NOTE_D0s, NOTE_E0, NOTE_F0,NOTE_F0s, NOTE_G0, NOTE_G0s, NOTE_A0, NOTE_A0s, NOTE_B0};
+byte controlMessageProNatural[PRO + 1] = {NOTE_E1, NOTE_F1};
+
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------Custom Configuration Structs----------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------
@@ -75,10 +86,10 @@ H4_PadController PadNotes[qPadNotes] = {H4_PadController(0,14),
                                  H4_PadController(3,27),
                                  H4_PadController(4,36),
                                  H4_PadController(5,26),
-                                 H4_PadController(6,35),
+                                 H4_PadController(6,43),
                                  H4_PadController(7,25),
                                  H4_PadController(8,24),
-                                 H4_PadController(9,11),
+                                 H4_PadController(9,35),
                                  H4_PadController(10,23),
                                  H4_PadController(11,32),
                                  H4_PadController(12,22),
@@ -86,21 +97,26 @@ H4_PadController PadNotes[qPadNotes] = {H4_PadController(0,14),
                                  H4_PadController(14,21),
                                  H4_PadController(15,20),
                                  H4_PadController(16,34),
-                                 H4_PadController(17,8)};
-H4_PadController PadOctaver     = H4_PadController(0,18);
+                                 H4_PadController(17,42)};
+H4_PadController PadOctaver     = H4_PadController(0,10);
 H4_PadController PadInstrument  = H4_PadController(0,39);
 H4_PadController PadScaler      = H4_PadController(0,41);
 H4_PadController PadMode        = H4_PadController(0,40);
-H4_PadController PadProNatural  = H4_PadController(0,12);
+H4_PadController PadProNatural  = H4_PadController(0,18);
+H4_PadController PadVoiceDescription = H4_PadController(0,12);
 
-H4_MIDIController MIDI =        H4_MIDIController();
+H4_MIDIController MIDI          = H4_MIDIController();
+#ifdef  LEDSIGNALLING
+  H4_LEDSignal LEDSignal          = H4_LEDSignal(LEDSIGNAL);
+#endif
 
-int octaveCorrector[6]           = {0, 1, 0, 0, 0, 1};
-byte currentInstrument           = INSTRUMENT_MIN;   // Channel is also the Instrument
-byte currentScale                = SCALE_MIN;   // Channel is also the Instrument
-int currentOctave                = OCTAVE_MIN;   // Starting at value NOTE_C5 60
-byte currentMode                 = MODE_MIN;
-byte currentProNatural           = NATURAL;
+int octaveCorrector[6]              = {0, 1, 0, 0, 0, 1};
+byte currentInstrument              = INSTRUMENT_MIN;   // Channel is also the Instrument
+byte currentScale                   = SCALE_MIN;   // Channel is also the Instrument
+int currentOctave                   = OCTAVE_MIN;   // Starting at value NOTE_C5 60
+byte currentMode                    = MODE_MIN;
+byte currentProNatural              = NATURAL;
+byte currentVoiceDescription  = ON;
 
 int iterator = 0;
 
@@ -110,6 +126,10 @@ void setup() {
   Wire.onReceive(recieveRequestResponse); // register event
   Serial.begin(115200);
   delay(500);
+#ifdef  LEDSIGNALLING
+  LEDSignal.init();
+  LEDSignal.blinkColorAndStay(WHITE_BRIGHT, WHITE_LOW, MIN_DURATION);
+#endif
   padInitialization(currentProNatural);
 
   // Only to Initialice new ones
@@ -122,6 +142,7 @@ void setup() {
 void loop() {
   read_allPads();
   read_octaverPad();
+  read_voiceDescriptionPad();
   read_instrumentPad();
   read_modePad();
   read_scalerPad();
@@ -136,11 +157,11 @@ void padInitialization(int proNatural){
   currentMode                 = MODE_MIN;
   // Initialize all Pads
   set_PadInstrument(currentInstrument);
-  set_PadMode(proNatural);
   set_PadScaler(proNatural);
-  set_PadProNatural(proNatural);
-  set_PadProNatural(currentProNatural);
+  set_PadMode(proNatural);
   set_PadOctaver();
+  set_PadProNatural(currentProNatural);
+  set_PadVoiceDescription(currentVoiceDescription);
   set_allPadNote(currentScale, currentInstrument, proNatural);
 }
 
@@ -176,10 +197,15 @@ void read_allPads(){
   for(int i = 0; i < qPadNotes; i++){
       padResult = PadNotes[i].get_padEvent(0);
       if(padResult == EVENT_TO_ON){
-        
         MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_0, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)), (byte)PadNotes[i].INSTRUCTION.velocityCode_0);
+#ifdef  LEDSIGNALLING
+        LEDSignal.blinkColorAndStay(PadNotes[i].CONF.primaryColor, WHITE_LOW, MIN_DURATION);
+#endif   
       }else if(padResult == EVENT_TO_OFF){
         MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_1, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)), (byte)PadNotes[i].INSTRUCTION.velocityCode_1);
+#ifdef  LEDSIGNALLING
+        LEDSignal.blinkColorAndStay(PadNotes[i].CONF.primaryColor, WHITE_LOW, MIN_DURATION);
+#endif
       }
   }
 }
@@ -271,6 +297,17 @@ void set_PadOctaver(){
    individualSwipeColor_SinglePad(&PadOctaver);
 }
 
+void set_PadVoiceDescription(bool activeVoiceDescription){
+  PadVoiceDescription.set_padConfiguration(PadVoiceDescriptionColor[activeVoiceDescription][0],
+                                    PadVoiceDescriptionColor[activeVoiceDescription][1],
+                                    DISCONNECTEDCOLOR,CONNECTEDCOLOR,
+                                    BLINKDURATION,FADEDURATION,
+                                    CH_ON,
+                                    CH_OFF,CH_OFF,CH_OFF,
+                                    CH_THR,CH_THR,CH_THR,CH_THR);
+   individualSwipeColor_SinglePad(&PadVoiceDescription);
+}
+
 void set_PadProNatural(int proNatural){
   PadProNatural.set_padConfiguration(PadProNaturalColor[proNatural][0],
                                     PadProNaturalColor[proNatural][1],
@@ -321,13 +358,13 @@ void read_octaverPad(){
   padResult = PadOctaver.get_padEvent(0);
   if(padResult == EVENT_TO_ON){
     if(currentOctave == OCTAVE_MIN){
-      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
       currentOctave = OCTAVE_MAX;
-      MIDI.MIDI_TX(CH_CONTROL, NOTE_ON, OFFSET_OCTAVER + currentInstrument - OCTAVE_MIN, 127);
-    }else if(currentOctave == OCTAVE_MAX){
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageOctaver[currentOctave - OCTAVE_MIN], 127);
       MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
+    }else if(currentOctave == OCTAVE_MAX){
       currentOctave = OCTAVE_MIN;
-      MIDI.MIDI_TX(CH_CONTROL, NOTE_ON, OFFSET_OCTAVER + currentInstrument - OCTAVE_MIN, 127);
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageOctaver[currentOctave - OCTAVE_MIN], 127);
+      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
     }
   }else{
     // Do nothing
@@ -341,19 +378,19 @@ void read_instrumentPad(){
   padDown = PadInstrument.get_padEvent(0);
   if(padUp == EVENT_TO_ON){
     if(currentInstrument < INSTRUMENT_MAX){
-      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
       currentInstrument++;
-      MIDI.MIDI_TX(CH_CONTROL, NOTE_ON, OFFSET_INSTRUMENT + currentInstrument, 127);
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageInstrument[currentInstrument], 127);
       set_PadInstrument(currentInstrument);
+      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
       set_allPadNote(currentScale, currentInstrument, currentProNatural);
     }
   }
   if(padDown == EVENT_TO_ON){
     if(currentInstrument > INSTRUMENT_MIN){
-      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
       currentInstrument--;
-      MIDI.MIDI_TX(CH_CONTROL, NOTE_ON, OFFSET_INSTRUMENT + currentInstrument, 127);
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageInstrument[currentInstrument], 127);
       set_PadInstrument(currentInstrument);
+      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
       set_allPadNote(currentScale, currentInstrument, currentProNatural);
     }
   }
@@ -366,16 +403,16 @@ void read_scalerPad(){
   padDown = PadScaler.get_padEvent(0);
   if(padUp == EVENT_TO_ON){
     if(currentScale < SCALE_MAX){
-      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
       currentScale++;
-      MIDI.MIDI_TX(CH_CONTROL, NOTE_ON, OFFSET_SCALE + currentScale, 127);
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageScaler[currentScale], 127);
+      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
       set_allPadNote(currentScale, currentInstrument, currentProNatural);
     }
   }else if(padDown == EVENT_TO_ON){
     if(currentScale > SCALE_MIN){
-      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
       currentScale--;
-      MIDI.MIDI_TX(CH_CONTROL, NOTE_ON, OFFSET_SCALE + currentScale, 127);
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageScaler[currentScale], 127);
+      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
       set_allPadNote(currentScale, currentInstrument, currentProNatural);
     }
   }
@@ -389,12 +426,12 @@ void read_modePad(){
   if(padUp == EVENT_TO_ON){
     if(currentMode < MODE_MAX){
         currentMode++;
-        MIDI.MIDI_TX(CH_CONTROL, NOTE_ON, OFFSET_MODE + currentMode, 127);
+        sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageMode[currentMode], 127);
       }
   }else if(padDown == EVENT_TO_ON){
     if(currentMode > MODE_MIN){
         currentMode--;
-        MIDI.MIDI_TX(CH_CONTROL, NOTE_ON, OFFSET_MODE + currentMode, 127);
+        sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageMode[currentMode], 127);
       }
   }
 }
@@ -405,14 +442,59 @@ void read_proNaturalPad(){
   if(padResult == EVENT_TO_ON){
     if(currentProNatural == NATURAL){
       currentProNatural = PRO;
-      MIDI.MIDI_TX(CH_CONTROL, NOTE_ON, OFFSET_PRONATURAL + currentProNatural, 127);
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageProNatural[currentProNatural], 127);
       padInitialization(currentProNatural);
     }else if(currentProNatural == PRO){
       currentProNatural = NATURAL;
-      MIDI.MIDI_TX(CH_CONTROL, NOTE_ON, OFFSET_PRONATURAL + currentProNatural, 127);
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageProNatural[currentProNatural], 127);
       padInitialization(currentProNatural);
     }
   }else{
     // Do nothing
+  }
+}
+
+void read_voiceDescriptionPad(){
+  int padResult = 0;
+  padResult = PadVoiceDescription.get_padEvent(0);
+  if(padResult == EVENT_TO_ON){
+    if(currentVoiceDescription == OFF){
+      currentVoiceDescription = ON;
+      set_PadVoiceDescription(currentVoiceDescription);
+      voiceSituationReport();
+    }else if(currentVoiceDescription == ON){
+      currentVoiceDescription = OFF;
+      set_PadVoiceDescription(currentVoiceDescription);
+    }
+  }else{
+    // Do nothing
+  }
+}
+
+void voiceSituationReport(){
+   sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageProNatural[currentProNatural], 127);
+   delay(1500);
+   sendVoiceCommand(CH_CONTROL, NOTE_ON, NOTE_G2, 127);   // "Instrumentos"
+   delay(1200);
+   sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageInstrument[currentInstrument], 127);
+   delay(1500);
+   sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageOctaver[currentOctave - OCTAVE_MIN], 127);
+
+
+   if(currentProNatural == PRO){
+      delay(1500);
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, NOTE_G2s, 127);   // "Escalas"
+      delay(1200);
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageScaler[currentScale], 127);
+      delay(1500);
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, NOTE_C1, 127);   // "Tono"
+      delay(1200);
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageMode[currentMode], 127);
+   }
+}
+
+void sendVoiceCommand(byte MIDICHANNEL, byte MESSAGE, byte PITCH, byte VELOCITY){
+  if(currentVoiceDescription){
+    MIDI.MIDI_TX(MIDICHANNEL, MESSAGE, PITCH, VELOCITY);
   }
 }

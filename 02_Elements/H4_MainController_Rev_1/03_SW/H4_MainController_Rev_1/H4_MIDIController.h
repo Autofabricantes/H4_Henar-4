@@ -87,7 +87,7 @@ const byte SCALES[7][nPADNOTE] = {{NOTE_A0, NOTE_A0s, NOTE_B0, NOTE_C1, NOTE_C1s
                                     {NOTE_C0, NONOTE, NOTE_D0s, NOTE_F0, NONOTE, NOTE_G0, NONOTE, NOTE_A0s, NOTE_C1, NONOTE, NOTE_D1s, NONOTE, NOTE_F1, NONOTE, NOTE_G1, NOTE_A1s, NONOTE, NOTE_C2}   // Escala Pentatonico Menor I-IIIb-IV-VIIb-I'-IIIb'
 }; 
 
-//extern H4_WireController WireController;
+
 
 
 class H4_MIDIController

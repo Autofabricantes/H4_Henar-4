@@ -50,10 +50,10 @@ const bool DEFAULT_CH_On_0 = 1;           // ON
 const bool DEFAULT_CH_On_1 = 0;           // OFF
 const bool DEFAULT_CH_On_2 = 0;           // OFF
 const bool DEFAULT_CH_On_3 = 0;           // OFF
-const int DEFAULT_CH_Thr_0 = 60;          // AVERAGE
-const int DEFAULT_CH_Thr_1 = 60;          // AVERAGE
-const int DEFAULT_CH_Thr_2 = 60;          // AVERAGE
-const int DEFAULT_CH_Thr_3 = 60;          // AVERAGE
+const int DEFAULT_CH_Thr_0 = 80;          // AVERAGE
+const int DEFAULT_CH_Thr_1 = 80;          // AVERAGE
+const int DEFAULT_CH_Thr_2 = 80;          // AVERAGE
+const int DEFAULT_CH_Thr_3 = 80;          // AVERAGE
 
 const bool CH_OFF           = 0;           // ON
 const bool CH_ON            = 1;           // OFF

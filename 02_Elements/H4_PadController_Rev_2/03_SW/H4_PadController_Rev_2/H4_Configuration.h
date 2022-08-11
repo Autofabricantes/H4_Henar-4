@@ -45,21 +45,21 @@ class H4_Configuration
     void set_defaultI2cDirConfiguration();
     // Structure to easily manage all the parameters
     struct storedConfiguration{
-        int i2cDIR_Stored;
-        int primaryColor;
-        int secondaryColor;
-        int disconnectedColor;
-        int connectedColor;
-        int blinkDuration;
-        int fadeDuration;
+        byte i2cDIR_Stored;
+        byte primaryColor;
+        byte secondaryColor;
+        byte disconnectedColor;
+        byte connectedColor;
+        byte blinkDuration;
+        byte fadeDuration;
         bool CH_On_0;
         bool CH_On_1;
         bool CH_On_2;
         bool CH_On_3;
-        int CH_Thr_0;
-        int CH_Thr_1;
-        int CH_Thr_2;
-        int CH_Thr_3;
+        byte CH_Thr_0;
+        byte CH_Thr_1;
+        byte CH_Thr_2;
+        byte CH_Thr_3;
     };
 
     storedConfiguration CONF;
