@@ -7,7 +7,6 @@
 #define H4_ConfIGURATION_H
 
 #include "Arduino.h"
-#include <EEPROM.h>
 
 const int SIGNATURE_ADDR = 0;  // EEPROM Signature Address
 // Signature Value
@@ -21,8 +20,8 @@ const int DEFAULT_primaryColor = 14;      // CYAN_HIGH
 const int DEFAULT_secondaryColor = 2;     // WHITE_LOW
 const int DEFAULT_disconnectedColor = 4;  // RED_BRIGHT
 const int DEFAULT_connectedColor = 8;     // BLUE_HIGH
-const int DEFAULT_blinkDuration = 30;     // MS
-const int DEFAULT_fadeDuration = 30;      // MS
+const int DEFAULT_blinkDuration = 300;     // MS
+const int DEFAULT_fadeDuration = 300;      // MS
 const bool DEFAULT_CH_On_0 = 1;           // ON
 const bool DEFAULT_CH_On_1 = 0;           // OFF
 const bool DEFAULT_CH_On_2 = 0;           // OFF
@@ -38,9 +37,6 @@ class H4_Configuration
   public:
     H4_Configuration();
     void init();
-    bool checkSignature();
-    void loadConfiguration();
-    void saveConfiguration();
     void set_defaultConfiguration();
     void set_defaultI2cDirConfiguration();
     // Structure to easily manage all the parameters

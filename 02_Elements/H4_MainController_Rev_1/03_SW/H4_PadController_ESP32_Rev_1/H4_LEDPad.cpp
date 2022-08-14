@@ -127,7 +127,6 @@ void H4_LEDPad::fadeColor_fromNucleo(int initColorCode, int endColorCode, int fa
      _LED.setPixelColor(4, gamma8[COL[initColorCode][0] + (i+1)*fadeR_R1], gamma8[COL[initColorCode][1] + (i+1)*fadeG_R1], gamma8[COL[initColorCode][2] + (i+1)*fadeB_R1]);
      _LED.show();
      delay(fadeInterval);
-
   }
 }
 

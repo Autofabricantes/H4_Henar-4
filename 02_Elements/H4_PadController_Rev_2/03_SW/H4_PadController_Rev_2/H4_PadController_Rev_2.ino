@@ -40,7 +40,7 @@ const int pPAD_3            = A3;
 // Constant Value Definition
 const byte i2cDIR                = 8;
 
-const byte FixedI2cDIR           = 37;
+const byte FixedI2cDIR           = 17;
 
 const bool OFF                  = 0;
 const bool ON                   = 1;

@@ -125,7 +125,7 @@ void setup() {
   Wire.begin();
   Wire.onReceive(recieveRequestResponse); // register event
   Serial.begin(115200);
-  delay(500);
+  delay(1500);
 #ifdef  LEDSIGNALLING
   LEDSignal.init();
   LEDSignal.blinkColorAndStay(WHITE_BRIGHT, WHITE_LOW, MIN_DURATION);
@@ -383,11 +383,23 @@ void read_instrumentPad(){
       set_PadInstrument(currentInstrument);
       MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
       set_allPadNote(currentScale, currentInstrument, currentProNatural);
+    }else if(currentInstrument == INSTRUMENT_MAX){
+      currentInstrument=INSTRUMENT_MIN;
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageInstrument[currentInstrument], 127);
+      set_PadInstrument(currentInstrument);
+      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
+      set_allPadNote(currentScale, currentInstrument, currentProNatural);
     }
   }
   if(padDown == EVENT_TO_ON){
     if(currentInstrument > INSTRUMENT_MIN){
       currentInstrument--;
+      sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageInstrument[currentInstrument], 127);
+      set_PadInstrument(currentInstrument);
+      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
+      set_allPadNote(currentScale, currentInstrument, currentProNatural);
+    }else if(currentInstrument == INSTRUMENT_MIN){
+      currentInstrument=INSTRUMENT_MAX;
       sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageInstrument[currentInstrument], 127);
       set_PadInstrument(currentInstrument);
       MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
