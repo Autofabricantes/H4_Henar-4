@@ -34,12 +34,12 @@ const byte PRO                  = 1;
 const byte MODE_MIN             = 0;
 const byte MODE_MAX             = 11;
 
-const byte PadInstrumentColor[6][2] = {{TURQOUISE_HIGH, WHITE_LOW},     // Escala Mayor             I-II-III-IV-V-VI-VII
-                            {GREEN_HIGH, WHITE_LOW},                    // Escala Menor Natural     I-II-IIIb-IV-V-VI-VIIb
-                            {BLUE_HIGH, WHITE_LOW},                     // Escala Arpegio Maj7      I-III-V-VII-I'-III'-V'
-                            {ORANGE_HIGH, WHITE_LOW},                   // Escala Arpegio Men7      I-IIb-V-VIIb-I'-IIIb'-V'
-                            {PURPLE_HIGH, WHITE_LOW},                   // Escala Pentatonico Mayor I-II-III-V-VI-I'-II'
-                            {ZIEL_HIGH, WHITE_LOW}                      // Escala Pentatonico Menor I-IIIb-IV-VIIb-I'-IIIb'
+const byte PadInstrumentColor[6][2] = {{TURQOUISE_HIGH, WHITE_LOW},
+                            {GREEN_HIGH, WHITE_LOW},
+                            {BLUE_HIGH, WHITE_LOW},
+                            {ORANGE_HIGH, WHITE_LOW},
+                            {PURPLE_HIGH, WHITE_LOW},
+                            {ZIEL_HIGH, WHITE_LOW}
 };
 
 const byte PadOctaverColor[2][2] = {{BLUE_LOW, WHITE_LOW},
