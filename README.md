@@ -4,8 +4,10 @@ Hi! Welcome to the **Henar#4 Repository**, please read carefully this welcome pa
 
 This repository is may miss some important points (after many months, I know :'( ) Please if whatever doubt you have is not yet solved contact us somehow (email, Github, etc)
 
+![](https://github.com/Autofabricantes/Henar-4/blob/master/00_General/00_Logos/Logo_Henar4.png?raw=true)
+
 ## Project Scope
-The Henar#4 is a Open Source MIDI percussion instrument designed to perform live. Its main characteristics are:
+The **Henar#4** is a Open Source MIDI percussion instrument designed to perform live. Its main characteristics are:
 
 **Open Source:** The Henar#4 has been designed and build with Open Source HW and SW and using accesible manufacturing technologies in order for it to be very affordable and easily moded.
 **Build Flexibility:** The Henar#4 has been designed to allow a large number of different configurations (HMI elements in order to cope with the specific neccessities of each user.
