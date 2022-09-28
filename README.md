@@ -6,6 +6,8 @@ This repository is may miss some important points (after many months, I know :'(
 
 ![](https://github.com/Autofabricantes/Henar-4/blob/master/00_General/00_Logos/Logo_Henar4.png?raw=true)
 
+![](https://github.com/Autofabricantes/H4_Henar-4/blob/master/01_Documentation/00_SystemDiagrams/H4_FullSystem_Simple.png?raw=true)
+
 ## Project Scope
 The **Henar#4** is a Open Source MIDI percussion instrument designed to perform live. Its main characteristics are:
 
