@@ -1,7 +1,16 @@
 /*
  * @author Pablo dMM (Pablodmm.isp@gmail.com)
- * @brief  Part of the Henar#4 Project. https://github.com/Autofabricantes/Henar-4 .This code controls 8 padNote, 1 padInstrument and 1 padOctave
- * @date   2020_10_27
+ * @brief  Part of the Henar#4 Project. https://github.com/Autofabricantes/Henar-4 .This code controls a full system consisting of:
+ *         18x PadNotes
+ *         01x PadInstrument (Double Pad)
+ *         01x PadScaler  (Double Pad)
+ *         01x PadMode (Double Pad)
+ *         01x PadOctave
+ *         01x PadProNatural
+ *         01x PadVoiceCommand
+ *         
+ *         Please I now it sounds confusing, probably you should check the documentation first.
+ * @date   2022_09_29
  */
 
 // Library Import
@@ -11,6 +20,7 @@
 #include "H4_LEDSignal.h"
 // Modes
 #define PAD_TESTING
+// LEDSIGNALLING controls the LED in the MAINBoard to blink everytime a MIDI Message is sent. It does not work very well yet...
 //#define LEDSIGNALLING
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------System Pin Definition-----------------------------------------------------------------
@@ -71,7 +81,6 @@ byte controlMessageProNatural[PRO + 1] = {NOTE_E1, NOTE_F1};
 // ---------------------------------------------------Custom Configuration Structs----------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------
 
-
 // -----------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------Global Variables----------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------
@@ -80,6 +89,7 @@ int inMssg[10] = {0,0,0,0,0,0,0,0,0,0};
 int PadProActivation[2][18] = {{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                               {1,0,1,1,0,1,0,1,1,0,1,0,1,0,1,1,0,1}};
 
+// Pad I2C Direction definition
 H4_PadController PadNotes[qPadNotes] = {H4_PadController(0,14),
                                  H4_PadController(1,37),
                                  H4_PadController(2,29),
@@ -125,13 +135,12 @@ void setup() {
   Wire.begin();
   Wire.onReceive(recieveRequestResponse); // register event
   Serial.begin(115200);
-  delay(1500);
+  delay(1500);  // Small delay for all elements to power up
 #ifdef  LEDSIGNALLING
   LEDSignal.init();
   LEDSignal.blinkColorAndStay(WHITE_BRIGHT, WHITE_LOW, MIN_DURATION);
 #endif
   padInitialization(currentProNatural);
-
   // Only to Initialice new ones
   //while(1){setNewI2cDirFromDefault(42);};
 }
@@ -149,6 +158,10 @@ void loop() {
   read_proNaturalPad();
 }
 
+/**
+ * @brief Groups all the H4_PadController initializations
+ * @param proNatural current proNatural Mode
+ */
 void padInitialization(int proNatural){
   // Stablish the default values except ProNatural
   currentInstrument           = INSTRUMENT_MIN;   // Channel is also the Instrument
@@ -165,6 +178,10 @@ void padInitialization(int proNatural){
   set_allPadNote(currentScale, currentInstrument, proNatural);
 }
 
+/**
+ * @brief Function to recieve the incoming I2C Message and store it into a input buffer (inMssg)
+ * @param HowMany Unused
+ */
 void recieveRequestResponse(int HowMany){
   ////Serial.println("\nRecieve1:");
   int i = 0;
@@ -176,10 +193,19 @@ void recieveRequestResponse(int HowMany){
   }
 }
 
+/**
+ * @brief I2C Command to H4_PadController to change the default I2C Direction (0x08) and store a new one in its EEPROM. It is mainly used during early configuration.
+ * @param newDir  New I2C Direction
+ */
 void setNewI2cDirFromDefault(int newDir){
   change_i2cDir(8, newDir);
 }
 
+/**
+ * @brief I2C Command to H4_PADController to change the I2C Direction and store a new one in its EEPROM. It is mainly used during early configuration.
+ * @param oldDir  Old I2C Direction
+ * @param newDir  New I2C Direction
+ */
 void change_i2cDir(int oldDir, int newDir){
   /*//Serial.println(oldDir);
   //Serial.println(newDir);*/
@@ -192,6 +218,9 @@ void change_i2cDir(int oldDir, int newDir){
   Wire.endTransmission();
 }
 
+/**
+ * @brief Makes an I2C Polling of all the Note_PAD in PadNotes. If a ON/OFF Step is detected, launches the according MIDI Message
+ */
 void read_allPads(){
   int padResult = 0;
   for(int i = 0; i < qPadNotes; i++){
@@ -251,6 +280,10 @@ void set_allPadNote(int scaleId, int instrumentId, boolean proNaturalMode){
     swipeColor_allPads();   // Makes the visual changes to the new configuration
 }
 
+/**
+ * @brief Sets the PadInstrument according to the current instrumentId
+ * @param instrumentId  current instrument ID
+ */
 void set_PadInstrument(int instrumentId){
   int primaryColorToSet = PadInstrumentColor[instrumentId][0];
   int secondaryColorToSet = PadInstrumentColor[instrumentId][1];
@@ -262,6 +295,10 @@ void set_PadInstrument(int instrumentId){
   individualSwipeColor_SinglePad(&PadInstrument);
 }
 
+/**
+ * @brief Sets the PadMode according to the current PadMode (global) and proNatural Mode
+ * @param proNatural  current proNatural Mode
+ */
 void set_PadMode(int proNatural){
   PadMode.set_padConfiguration(PadModeColor[proNatural][0],
                                     PadModeColor[proNatural][1],
@@ -274,6 +311,10 @@ void set_PadMode(int proNatural){
    individualSwipeColor_SinglePad(&PadMode);
 }
 
+/**
+ * @brief Sets the PadScaler according to the current PadScale (global) and proNatural Mode
+ * @param proNatural  current proNatural Mode
+ */
 void set_PadScaler(int proNatural){
   PadScaler.set_padConfiguration(PadScalerColor[proNatural][0],
                                     PadScalerColor[proNatural][1],
@@ -286,6 +327,10 @@ void set_PadScaler(int proNatural){
    individualSwipeColor_SinglePad(&PadScaler);
 }
 
+/**
+ * @brief Sets the PadOctaver according to the current PadOctaver (global) and proNatural Mode
+ * @param proNatural  current proNatural Mode
+ */
 void set_PadOctaver(){
   PadOctaver.set_padConfiguration(PadOctaverColor[0][0],
                                     PadOctaverColor[0][1],
@@ -297,6 +342,10 @@ void set_PadOctaver(){
    individualSwipeColor_SinglePad(&PadOctaver);
 }
 
+/**
+ * @brief Sets the PadVoiceDescription according to the current activeVoiceDescription Mode
+ * @param activeVoiceDescription  current activeVoiceDescription Mode
+ */
 void set_PadVoiceDescription(bool activeVoiceDescription){
   PadVoiceDescription.set_padConfiguration(PadVoiceDescriptionColor[activeVoiceDescription][0],
                                     PadVoiceDescriptionColor[activeVoiceDescription][1],
@@ -308,6 +357,10 @@ void set_PadVoiceDescription(bool activeVoiceDescription){
    individualSwipeColor_SinglePad(&PadVoiceDescription);
 }
 
+/**
+ * @brief Sets the PadProNatural according to the current PadProNatural Mode
+ * @param proNatural  current proNatural Mode
+ */
 void set_PadProNatural(int proNatural){
   PadProNatural.set_padConfiguration(PadProNaturalColor[proNatural][0],
                                     PadProNaturalColor[proNatural][1],
@@ -335,6 +388,9 @@ void swipeColor_allPads(){
   }
 }
 
+/**
+ * @brief Makes a color swipe of a single Pad according to its stored parameters
+ */
 void individualSwipeColor_SinglePad(H4_PadController *padToPerform){
    padToPerform->set_padLedActivity(LED_ID_FADEFROMNUCLEO, padToPerform->CONF.secondaryColor, padToPerform->CONF.primaryColor, padToPerform->CONF.fadeDuration);
    delay(50);
@@ -353,6 +409,9 @@ void individualSwipeColor_allPads(){
   }
 }
 
+/*
+ * @brief Makes a read of the PadOctaver and performs actions if needed.
+ */
 void read_octaverPad(){
   int padResult = 0;
   padResult = PadOctaver.get_padEvent(0);
@@ -371,6 +430,9 @@ void read_octaverPad(){
   }
 }
 
+/*
+ * @brief Makes a read of the PadInstrument and performs actions if needed. Circular.
+ */
 void read_instrumentPad(){
   int padUp = 0;
   int padDown = 0;
@@ -408,6 +470,9 @@ void read_instrumentPad(){
   }
 }
 
+/*
+ * @brief Makes a read of the PadScaler and performs actions if needed. Non Circular
+ */
 void read_scalerPad(){
   int padUp = 0;
   int padDown = 0;
@@ -430,6 +495,9 @@ void read_scalerPad(){
   }
 }
 
+/*
+ * @brief Makes a read of the PadMode and performs actions if needed. Non Circular
+ */
 void read_modePad(){
   int padUp = 0;
   int padDown = 0;
@@ -448,6 +516,9 @@ void read_modePad(){
   }
 }
 
+/*
+ * @brief Makes a read of the PadProNatural and performs actions if needed.
+ */
 void read_proNaturalPad(){
   int padResult = 0;
   padResult = PadProNatural.get_padEvent(0);
@@ -466,6 +537,9 @@ void read_proNaturalPad(){
   }
 }
 
+/*
+ * @brief Makes a read of the PadVoiceDescription and performs actions if needed.
+ */
 void read_voiceDescriptionPad(){
   int padResult = 0;
   padResult = PadVoiceDescription.get_padEvent(0);
@@ -483,6 +557,9 @@ void read_voiceDescriptionPad(){
   }
 }
 
+/*
+ * @brief Launches a succesion of MIDI voice command detailling the current situation of the system
+ */
 void voiceSituationReport(){
    sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageProNatural[currentProNatural], 127);
    delay(1500);
@@ -491,8 +568,6 @@ void voiceSituationReport(){
    sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageInstrument[currentInstrument], 127);
    delay(1500);
    sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageOctaver[currentOctave - OCTAVE_MIN], 127);
-
-
    if(currentProNatural == PRO){
       delay(1500);
       sendVoiceCommand(CH_CONTROL, NOTE_ON, NOTE_G2s, 127);   // "Escalas"
@@ -505,6 +580,9 @@ void voiceSituationReport(){
    }
 }
 
+/*
+ * @brief Launches a MIDI voice command if currentVoiceDescription is ON
+ */
 void sendVoiceCommand(byte MIDICHANNEL, byte MESSAGE, byte PITCH, byte VELOCITY){
   if(currentVoiceDescription){
     MIDI.MIDI_TX(MIDICHANNEL, MESSAGE, PITCH, VELOCITY);
