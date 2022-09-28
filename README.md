@@ -1,11 +1,13 @@
 # Henar-4
 
-Hi! Welcome to the Henar#4 Repository, please read carefully this welcome page that describes the full content.
+Hi! Welcome to the **Henar#4 Repository**, please read carefully this welcome page that describes the full content.
 
 This repository is may miss some important points (after many months, I know :'( ) Please if whatever doubt you have is not yet solved contact us somehow (email, Github, etc)
 
+![](https://github.com/Autofabricantes/Henar-4/blob/master/00_General/00_Logos/Logo_Henar4.png?raw=true)
+
 ## Project Scope
-The Henar#4 is a Open Source MIDI percussion instrument designed to perform live. Its main characteristics are:
+The **Henar#4** is a Open Source MIDI percussion instrument designed to perform live. Its main characteristics are:
 
 **Open Source:** The Henar#4 has been designed and build with Open Source HW and SW and using accesible manufacturing technologies in order for it to be very affordable and easily moded.
 **Build Flexibility:** The Henar#4 has been designed to allow a large number of different configurations (HMI elements in order to cope with the specific neccessities of each user.
@@ -17,16 +19,16 @@ The Henar#4 is part of a longer project started by the _Celeo Proyectos_ and _Un
 
 Apart from the instrument (which has three previous versions which will be described later) the project aims to build up a platform for the community of developers, users and enthusiasts to work toguether towards new ways to socialize with music and make it accesible for everyone. This is achieved not only though the development of the instrument itself but also through the creation of didactic materials and the organization of events such as DiverS+S 2017 (http://www.diversos.eu/), where various projects were presented and put in common, in order to create links and an active net.
 
-![](https://github.com/Autofabricantes/Henar-3/blob/master/00_General/00_Logos/Logo_Diversos.png?raw=true)
+![](https://github.com/Autofabricantes/Henar-4/blob/master/00_General/00_Logos/Logo_Diversos.png?raw=true)
 
 The collaborators of this project are:
 ## Celeo Proyectos
 
-![](https://github.com/Autofabricantes/Henar-3/blob/master/00_General/00_Logos/Logo_CeleoProyectos.png?raw=true)
+![](https://github.com/Autofabricantes/Henar-4/blob/master/00_General/00_Logos/Logo_CeleoProyectos.png?raw=true)
 
 ## Un instrumento para Henar
 
-![](https://github.com/Autofabricantes/Henar-3/blob/master/00_General/00_Logos/Logo_UnInstrumentoParaHenar.png?raw=true)
+![](https://github.com/Autofabricantes/Henar-4/blob/master/00_General/00_Logos/Logo_UnInstrumentoParaHenar.png?raw=true)
 
 ### Website: www.centroceleo.es/henar
 ### Contact: uninstrumentoparahenar@gmail.com
