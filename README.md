@@ -56,8 +56,8 @@ The Un instrumento para Henar project has already developed two previous version
 ## Scope of the Wiki
 This Wiki aims to concentrate all the knowledge of the project. This covers:
 
- [ ] Global description of the project and its subsystems
- [ ] Description of all the files in the repository
- [ ] Description of all the elements and their evolution.
- [ ] Assembly Guide of all the elements (HW, SW, Mechanical).
- [ ] Tutorials and other didactic material.
+ -Global description of the project and its subsystems.
+ -Description of all the files in the repository.
+ -Description of all the elements and their evolution.
+ -Assembly Guide of all the elements (HW, SW, Mechanical).
+ -Common problems faced when building and configuration.
