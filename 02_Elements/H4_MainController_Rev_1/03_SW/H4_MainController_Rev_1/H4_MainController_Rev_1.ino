@@ -226,12 +226,21 @@ void read_allPads(){
   for(int i = 0; i < qPadNotes; i++){
       padResult = PadNotes[i].get_padEvent(0);
       if(padResult == EVENT_TO_ON){
-        MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_0, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)), (byte)PadNotes[i].INSTRUCTION.velocityCode_0);
+        if(currentProNatural == NATURAL){
+          MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_0, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)), (byte)PadNotes[i].INSTRUCTION.velocityCode_0);
+        else{ // PRO MODE
+          MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_0, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)) + currentMode, (byte)PadNotes[i].INSTRUCTION.velocityCode_0);
+        }
+
 #ifdef  LEDSIGNALLING
         LEDSignal.blinkColorAndStay(PadNotes[i].CONF.primaryColor, WHITE_LOW, MIN_DURATION);
 #endif   
       }else if(padResult == EVENT_TO_OFF){
-        MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_1, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)), (byte)PadNotes[i].INSTRUCTION.velocityCode_1);
+        if(currentProNatural == NATURAL){
+          MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_1, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)), (byte)PadNotes[i].INSTRUCTION.velocityCode_1);
+        }else{ // PRO MODE
+          MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_1, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)) + currentMode, (byte)PadNotes[i].INSTRUCTION.velocityCode_1);
+        }
 #ifdef  LEDSIGNALLING
         LEDSignal.blinkColorAndStay(PadNotes[i].CONF.primaryColor, WHITE_LOW, MIN_DURATION);
 #endif
@@ -419,11 +428,11 @@ void read_octaverPad(){
     if(currentOctave == OCTAVE_MIN){
       currentOctave = OCTAVE_MAX;
       sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageOctaver[currentOctave - OCTAVE_MIN], 127);
-      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
+      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C3, NOTE_C10);
     }else if(currentOctave == OCTAVE_MAX){
       currentOctave = OCTAVE_MIN;
       sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageOctaver[currentOctave - OCTAVE_MIN], 127);
-      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
+      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C3, NOTE_C10);
     }
   }else{
     // Do nothing
@@ -443,13 +452,13 @@ void read_instrumentPad(){
       currentInstrument++;
       sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageInstrument[currentInstrument], 127);
       set_PadInstrument(currentInstrument);
-      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
+      MIDI.MIDIOFF_FIX((currentInstrument-1), NOTE_C34, NOTE_C10);
       set_allPadNote(currentScale, currentInstrument, currentProNatural);
     }else if(currentInstrument == INSTRUMENT_MAX){
       currentInstrument=INSTRUMENT_MIN;
       sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageInstrument[currentInstrument], 127);
       set_PadInstrument(currentInstrument);
-      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
+      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C3, NOTE_C10);
       set_allPadNote(currentScale, currentInstrument, currentProNatural);
     }
   }
@@ -458,13 +467,13 @@ void read_instrumentPad(){
       currentInstrument--;
       sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageInstrument[currentInstrument], 127);
       set_PadInstrument(currentInstrument);
-      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
+      MIDI.MIDIOFF_FIX((currentInstrument+1), NOTE_C3, NOTE_C10);
       set_allPadNote(currentScale, currentInstrument, currentProNatural);
     }else if(currentInstrument == INSTRUMENT_MIN){
       currentInstrument=INSTRUMENT_MAX;
       sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageInstrument[currentInstrument], 127);
       set_PadInstrument(currentInstrument);
-      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
+      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C3, NOTE_C10);
       set_allPadNote(currentScale, currentInstrument, currentProNatural);
     }
   }
@@ -482,14 +491,14 @@ void read_scalerPad(){
     if(currentScale < SCALE_MAX){
       currentScale++;
       sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageScaler[currentScale], 127);
-      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
+      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C3, NOTE_C10);
       set_allPadNote(currentScale, currentInstrument, currentProNatural);
     }
   }else if(padDown == EVENT_TO_ON){
     if(currentScale > SCALE_MIN){
       currentScale--;
       sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageScaler[currentScale], 127);
-      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C4, NOTE_C10);
+      MIDI.MIDIOFF_FIX(currentInstrument, NOTE_C3, NOTE_C10);
       set_allPadNote(currentScale, currentInstrument, currentProNatural);
     }
   }
