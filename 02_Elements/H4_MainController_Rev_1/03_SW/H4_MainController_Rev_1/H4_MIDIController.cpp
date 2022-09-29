@@ -15,6 +15,13 @@ H4_MIDIController::H4_MIDIController()
 
 }
 
+/**
+ * @brief Sends a MIDI Message through Serial
+ * @param MIDICHANNEL
+ * @param MESSAGE
+ * @param PITCH
+ * @param VELOCITY
+ */	
 void H4_MIDIController::MIDI_TX(byte MIDICHANNEL, byte MESSAGE, byte PITCH, byte VELOCITY) {
   //byte status1 = MESSAGE + MIDICHANNEL;
   //Serial.write(MESSAGE + MIDICHANNEL);
@@ -25,6 +32,12 @@ void H4_MIDIController::MIDI_TX(byte MIDICHANNEL, byte MESSAGE, byte PITCH, byte
   MidiUSB.flush();
 }
 
+/**
+ * @brief Sends a OFF Note signal from INIT_NOTE to END_NOTE
+ * @param CHANNEL	The Channel in which to send the Note message
+ * @param INIT_NOTE
+ * @param END_NOTE
+ */
 void H4_MIDIController::MIDIOFF_FIX(byte CHANNEL, int INIT_NOTE, int END_NOTE){ // This is a very rude and nasty sustitution to a General Note Off CMD
   for(int i= INIT_NOTE; i <= END_NOTE; i++){
     MIDI_TX(CHANNEL, NOTE_OFF, i, 0);
