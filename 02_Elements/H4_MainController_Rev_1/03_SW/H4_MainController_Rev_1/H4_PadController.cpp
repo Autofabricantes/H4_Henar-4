@@ -77,7 +77,7 @@ int H4_PadController::get_padEvent(int CH_ID){
   Wire.write(getChMSSG[0]);
   Wire.endTransmission();
   delay(1);
-  Wire.requestFrom(CONF.i2cDIR,9 );
+  Wire.requestFrom(CONF.i2cDIR, 9);
   recieveResponse(0);
 
   int padNow = 1 + CH_ID;

@@ -130,6 +130,26 @@ byte currentVoiceDescription  = ON;
 
 int iterator = 0;
 
+
+// Define functions to trick the compiler
+void read_octaverPad();
+void read_voiceDescriptionPad();
+void read_instrumentPad();
+void read_modePad();
+void read_scalerPad();
+void read_proNaturalPad();
+void set_allPadNote(int scaleId, int instrumentId, boolean proNaturalMode);
+void set_PadInstrument(int instrumentId);
+void set_PadMode(int proNatural);
+void set_PadScaler(int proNatural);
+void set_PadOctaver();
+void set_PadVoiceDescription(bool activeVoiceDescription);
+void set_PadProNatural(int proNatural);
+void swipeColor_allPads();
+void individualSwipeColor_SinglePad(H4_PadController *padToPerform);
+void individualSwipeColor_allPads();
+
+
 void setup() {
   // i2C Initialization
   Wire.begin();
@@ -228,8 +248,8 @@ void read_allPads(){
       if(padResult == EVENT_TO_ON){
         if(currentProNatural == NATURAL){
           MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_0, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)), (byte)PadNotes[i].INSTRUCTION.velocityCode_0);
-        else{ // PRO MODE
-          MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_0, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)) + currentMode, (byte)PadNotes[i].INSTRUCTION.velocityCode_0);
+        }else{ // PRO MODE
+          MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_0, ((byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)) + currentMode), (byte)PadNotes[i].INSTRUCTION.velocityCode_0);
         }
 
 #ifdef  LEDSIGNALLING
@@ -239,7 +259,7 @@ void read_allPads(){
         if(currentProNatural == NATURAL){
           MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_1, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)), (byte)PadNotes[i].INSTRUCTION.velocityCode_1);
         }else{ // PRO MODE
-          MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_1, (byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)) + currentMode, (byte)PadNotes[i].INSTRUCTION.velocityCode_1);
+          MIDI.MIDI_TX((byte)PadNotes[i].INSTRUCTION.channelCode, (byte)PadNotes[i].INSTRUCTION.instructionCode_1, ((byte)(PadNotes[i].INSTRUCTION.pitchCode + ((currentOctave + octaveCorrector[currentInstrument]) * 12)) + currentMode), (byte)PadNotes[i].INSTRUCTION.velocityCode_1);
         }
 #ifdef  LEDSIGNALLING
         LEDSignal.blinkColorAndStay(PadNotes[i].CONF.primaryColor, WHITE_LOW, MIN_DURATION);
@@ -452,7 +472,7 @@ void read_instrumentPad(){
       currentInstrument++;
       sendVoiceCommand(CH_CONTROL, NOTE_ON, controlMessageInstrument[currentInstrument], 127);
       set_PadInstrument(currentInstrument);
-      MIDI.MIDIOFF_FIX((currentInstrument-1), NOTE_C34, NOTE_C10);
+      MIDI.MIDIOFF_FIX((currentInstrument-1), NOTE_C3, NOTE_C10);
       set_allPadNote(currentScale, currentInstrument, currentProNatural);
     }else if(currentInstrument == INSTRUMENT_MAX){
       currentInstrument=INSTRUMENT_MIN;
