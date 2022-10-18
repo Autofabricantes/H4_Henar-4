@@ -48,6 +48,16 @@ The collaborators of this project are:
 ### Website: www.autofabricantes.org
 ### Contact: info@autofabricantes.org
 
+## Los Hacedores
+_**Los Hacedores**_ is a 3D Prototyping, design and printing company based in Madrid. They make use of the latest technologies regarding Laser cutting and 3D Printing with a variety of materials and techniques.
+
+They have collaborated both in the fabrication and desing of the mechanical parts of the Henar#4.
+
+![](https://github.com/Autofabricantes/H4_Henar-4/blob/master/00_General/00_Logos/Logo_LosHacedores.png?raw=true)
+
+### Website: https://loshacedores.com/
+### Contact: https://loshacedores.com/contacto/
+
 # About the previous Henar (Henar#1, Henar#2, Henar#3)
 The Un instrumento para Henar project has already developed two previous versions of the instruments.
 
