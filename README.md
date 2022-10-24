@@ -61,8 +61,6 @@ They have collaborated both in the fabrication and desing of the mechanical part
 # About the previous Henar (Henar#1, Henar#2, Henar#3)
 The Un instrumento para Henar project has already developed two previous versions of the instruments.
 
-## Henar#1: [HERE LINK]
-## Henar#2: [HERE LINK]
 ## Henar#3: https://github.com/Autofabricantes/H3_Henar-3
 
 ## Scope of the Wiki
