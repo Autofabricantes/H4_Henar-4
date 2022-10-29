@@ -71,3 +71,10 @@ This Wiki aims to concentrate all the knowledge of the project. This covers:
  -Description of all the elements and their evolution.
  -Assembly Guide of all the elements (HW, SW, Mechanical).
  -Common problems faced when building and configuration.
+
+# Improvements to be done:
+The improvements that a new developper could implement would be:
+
+- Use the ESP32 as an I2C Slave to create a BLE MIDI
+- Improve code to allow for the use of the RGB LEDs in the H4_MainBoard (Was not done because of memory limits in Arduino Leonardo)
+- Correct the EEPROM corruption in H4_PadController
